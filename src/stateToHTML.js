@@ -11,8 +11,12 @@ import {
 import type {ContentState, ContentBlock, EntityInstance} from 'draft-js';
 import type {CharacterMetaList} from 'draft-js-utils';
 
+type InlineTagMap = {[key: string]: string};
 type StringMap = {[key: string]: ?string};
 type AttrMap = {[key: string]: StringMap};
+type Options = {
+  inlineTags?: InlineTagMap;
+};
 
 const {
   BOLD,
@@ -61,6 +65,15 @@ const DATA_TO_ATTR = {
   },
 };
 
+// Map style to HTML tag
+const INLINE_STYLE_TO_TAG = {
+  [BOLD]: 'strong',
+  [CODE]: 'code',
+  [ITALIC]: 'em',
+  [STRIKETHROUGH]: 'del',
+  [UNDERLINE]: 'ins',
+};
+
 // The reason this returns an array is because a single block might get wrapped
 // in two tags.
 function getTags(blockType: string): Array<string> {
@@ -105,12 +118,14 @@ class MarkupGenerator {
   contentState: ContentState;
   currentBlock: number;
   indentLevel: number;
+  options: ?Options;
   output: Array<string>;
   totalBlocks: number;
   wrapperTag: ?string;
 
-  constructor(contentState: ContentState) {
+  constructor(contentState: ContentState, options: ?Options = {}) {
     this.contentState = contentState;
+    this.options = options;
   }
 
   generate(): string {
@@ -220,6 +235,9 @@ class MarkupGenerator {
   }
 
   renderBlockContent(block: ContentBlock): string {
+    let {options} = this;
+    // Flow doesn't care that `options` has a default value in `constructor`.
+    let inlineTags = options ? options.inlineTags : null;
     let blockType = block.getType();
     let text = block.getText();
     if (text === '') {
@@ -229,26 +247,26 @@ class MarkupGenerator {
     text = this.preserveWhitespace(text);
     let charMetaList: CharacterMetaList = block.getCharacterList();
     let entityPieces = getEntityRanges(text, charMetaList);
+    // Merge core tag map with user provided map
+    let tagMap = {
+      ...INLINE_STYLE_TO_TAG,
+      ...inlineTags,
+    };
     return entityPieces.map(([entityKey, stylePieces]) => {
       let content = stylePieces.map(([text, style]) => {
         let content = encodeContent(text);
-        // These are reverse alphabetical by tag name.
-        if (style.has(BOLD)) {
-          content = `<strong>${content}</strong>`;
-        }
-        if (style.has(UNDERLINE)) {
-          content = `<ins>${content}</ins>`;
-        }
-        if (style.has(ITALIC)) {
-          content = `<em>${content}</em>`;
-        }
-        if (style.has(STRIKETHROUGH)) {
-          content = `<del>${content}</del>`;
-        }
+        let styleTypes = Object.keys(tagMap);
+        styleTypes.forEach((styleType) => {
+          if (styleType !== CODE && style.has(styleType)) {
+            content = `<${tagMap[styleType]}>${content}</${tagMap[styleType]}>`;
+          }
+        });
         if (style.has(CODE)) {
           // If our block type is CODE then we are already wrapping the whole
           // block in a `<code>` so don't wrap inline code elements.
-          content = (blockType === BLOCK_TYPE.CODE) ? content : `<code>${content}</code>`;
+          content = (blockType === BLOCK_TYPE.CODE) ?
+          content :
+          `<${tagMap[CODE]}>${content}</${tagMap[CODE]}>`;
         }
         return content;
       }).join('');
@@ -328,6 +346,6 @@ function encodeAttr(text: string): string {
     .split('"').join('&quot;');
 }
 
-export default function stateToHTML(content: ContentState): string {
-  return new MarkupGenerator(content).generate();
+export default function stateToHTML(content: ContentState, options: ?Options): string {
+  return new MarkupGenerator(content, options).generate();
 }
