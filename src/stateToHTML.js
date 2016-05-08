@@ -13,6 +13,7 @@ import type {CharacterMetaList} from 'draft-js-utils';
 
 type StringMap = {[key: string]: ?string};
 type AttrMap = {[key: string]: StringMap};
+type CustomStyleMap = {[key: string]: (content: string) => string};
 
 const {
   BOLD,
@@ -103,14 +104,16 @@ function getWrapperTag(blockType: string): ?string {
 class MarkupGenerator {
   blocks: Array<ContentBlock>;
   contentState: ContentState;
+  customStyles: CustomStyleMap;
   currentBlock: number;
   indentLevel: number;
   output: Array<string>;
   totalBlocks: number;
   wrapperTag: ?string;
 
-  constructor(contentState: ContentState) {
+  constructor(contentState: ContentState, customStyles: ?CustomStyleMap) {
     this.contentState = contentState;
+    this.customStyles = customStyles || {};
   }
 
   generate(): string {
@@ -250,6 +253,12 @@ class MarkupGenerator {
           // block in a `<code>` so don't wrap inline code elements.
           content = (blockType === BLOCK_TYPE.CODE) ? content : `<code>${content}</code>`;
         }
+        for (let styleKey of Object.keys(this.customStyles)) {
+          let styleFunction = this.customStyles[styleKey];
+          if (style.has(styleKey)) {
+            content = styleFunction(content);
+          }
+        }
         return content;
       }).join('');
       let entity = entityKey ? Entity.get(entityKey) : null;
@@ -328,6 +337,6 @@ function encodeAttr(text: string): string {
     .split('"').join('&quot;');
 }
 
-export default function stateToHTML(content: ContentState): string {
-  return new MarkupGenerator(content).generate();
+export default function stateToHTML(content: ContentState, customStyles: ?CustomStyleMap): string {
+  return new MarkupGenerator(content, customStyles).generate();
 }
