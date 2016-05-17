@@ -284,6 +284,13 @@ class MarkupGenerator {
         let strAttrs = stringifyAttrs(attrs);
         return `<img${strAttrs}/>`;
       } else {
+        if (this.options.inlineDecorator) {
+          const ret = this.options.inlineDecorator(entity, content);
+          if (ret !== null) {
+            return ret;
+          }
+        }
+
         return content;
       }
     }).join('');
