@@ -3,13 +3,16 @@
 import {Entity} from 'draft-js';
 import {
   getEntityRanges,
-  BLOCK_TYPE, ENTITY_TYPE, INLINE_STYLE,
-} from 'draft-js-tools';
+  BLOCK_TYPE,
+  ENTITY_TYPE,
+  INLINE_STYLE,
+} from 'draft-js-utils';
 
 import type {ContentState, ContentBlock, EntityInstance} from 'draft-js';
-import type {CharacterMetaList} from 'draft-js-tools';
+import type {CharacterMetaList} from 'draft-js-utils';
 
 type StringMap = {[key: string]: ?string};
+type AttrMap = {[key: string]: StringMap};
 
 const {
   BOLD,
@@ -20,10 +23,10 @@ const {
 } = INLINE_STYLE;
 
 const INDENT = '  ';
-const BREAK = '<br/>';
+const BREAK = '<br>';
 
 // Map entity data to element attributes.
-const ENTITY_ATTR_MAP = {
+const ENTITY_ATTR_MAP: AttrMap = {
   [ENTITY_TYPE.LINK]: {url: 'href', rel: 'rel', target: 'target', title: 'title', className: 'class'},
   [ENTITY_TYPE.IMAGE]: {src: 'src', height: 'height', width: 'width', alt: 'alt', className: 'class'},
 };
@@ -43,7 +46,7 @@ const DATA_TO_ATTR = {
     }
     return attrs;
   },
-  [ENTITY_TYPE.IMAGE](entityType: String, entity: EntityInstance): StringMap {
+  [ENTITY_TYPE.IMAGE](entityType: string, entity: EntityInstance): StringMap {
     let attrMap = ENTITY_ATTR_MAP.hasOwnProperty(entityType) ? ENTITY_ATTR_MAP[entityType] : {};
     let data = entity.getData();
     let attrs = {};
