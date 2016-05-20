@@ -29,3 +29,11 @@
   <li>One</li>
   <li>Two</li>
 </ol>
+
+# Single custom style
+{"entityMap":{},"blocks":[{"key":"99n0j","text":"asdf","type":"unstyled","depth":0,"inlineStyleRanges":[{"offset":3,"length":1,"style":"BLUE_ON_RED"}],"entityRanges":[]}]}
+<p>asd<span style="color: blue; background-color: red">f</span></p>
+
+# Nested custom styles
+{"entityMap":{},"blocks":[{"key":"9nc73","text":"BoldItalic","type":"unstyled","depth":0,"inlineStyleRanges":[{"offset":0,"length":10,"style":"BLUE_ON_RED"},{"offset":0,"length":10,"style":"UPPERCASE"}],"entityRanges":[]}]}
+<p><span style="text-transform: uppercase"><span style="color: blue; background-color: red">BoldItalic</span></span></p>
