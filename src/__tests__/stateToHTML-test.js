@@ -1,7 +1,7 @@
 /* @flow */
 const {describe, it} = global;
 import expect from 'expect';
-import {ContentState, convertFromRaw} from 'draft-js';
+import {convertFromRaw} from 'draft-js';
 import stateToHTML from '../stateToHTML';
 import fs from 'fs';
 import {join} from 'path';
@@ -26,10 +26,7 @@ describe('stateToHTML', () => {
   testCases.forEach((testCase) => {
     let {description, state, html} = testCase;
     it(`should render ${description}`, () => {
-      let contentState = ContentState.createFromBlockArray(
-        convertFromRaw(state)
-      );
-      expect(stateToHTML(contentState)).toBe(html);
+      expect(stateToHTML(convertFromRaw(state))).toBe(html);
     });
   });
 });
