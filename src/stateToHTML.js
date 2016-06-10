@@ -113,6 +113,9 @@ class MarkupGenerator {
   constructor(contentState: ContentState, options: Object) {
     this.contentState = contentState;
     this.options = options;
+    if (!this.options) {
+      this.options = {};
+    }
   }
 
   generate(): string {
