@@ -28,7 +28,14 @@ const BREAK = '<br>';
 // Map entity data to element attributes.
 const ENTITY_ATTR_MAP: AttrMap = {
   [ENTITY_TYPE.LINK]: {url: 'href', rel: 'rel', target: 'target', title: 'title', className: 'class'},
-  [ENTITY_TYPE.IMAGE]: {src: 'src', height: 'height', width: 'width', alt: 'alt', className: 'class'},
+  [ENTITY_TYPE.IMAGE]: {
+    src: 'src', 
+    height: 'height', 
+    width: 'width', 
+    alt: 'alt', 
+    className: 'class',
+    id: 'id',
+  },
 };
 
 // Map entity data to element attributes.
@@ -47,6 +54,8 @@ const DATA_TO_ATTR = {
     return attrs;
   },
   [ENTITY_TYPE.IMAGE](entityType: string, entity: EntityInstance): StringMap {
+    console.log(entity.getData());
+
     let attrMap = ENTITY_ATTR_MAP.hasOwnProperty(entityType) ? ENTITY_ATTR_MAP[entityType] : {};
     let data = entity.getData();
     let attrs = {};
