@@ -34,14 +34,16 @@ const ENTITY_ATTR_MAP: AttrMap = {
 // Map entity data to element attributes.
 const DATA_TO_ATTR = {
   [ENTITY_TYPE.LINK](entityType: string, entity: EntityInstance): StringMap {
-    let attrMap = ENTITY_ATTR_MAP.hasOwnProperty(entityType) ? ENTITY_ATTR_MAP[entityType] : {};
-    let data = entity.getData();
-    let attrs = {};
+    const attrMap = ENTITY_ATTR_MAP.hasOwnProperty(entityType) ? ENTITY_ATTR_MAP[entityType] : {};
+    const data = entity.getData();
+    const attrs = {};
     for (let dataKey of Object.keys(data)) {
-      let dataValue = data[dataKey];
+      const dataValue = data[dataKey];
       if (attrMap.hasOwnProperty(dataKey)) {
-        let attrKey = attrMap[dataKey];
+        const attrKey = attrMap[dataKey];
         attrs[attrKey] = dataValue;
+      } else if (dataKey.match(/^data-([a-z0-9-]+)$/)) {
+        attrs[dataKey] = dataValue;
       }
     }
     return attrs;

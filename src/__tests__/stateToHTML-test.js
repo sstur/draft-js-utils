@@ -1,7 +1,7 @@
 /* @flow */
 const {describe, it} = global;
 import expect from 'expect';
-import {ContentState, convertFromRaw} from 'draft-js';
+import {convertFromRaw} from 'draft-js';
 import stateToHTML from '../stateToHTML';
 import fs from 'fs';
 import {join} from 'path';
