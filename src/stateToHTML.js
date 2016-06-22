@@ -111,9 +111,14 @@ class MarkupGenerator {
   output: Array<string>;
   totalBlocks: number;
   wrapperTag: ?string;
+  options: ?Object;
 
-  constructor(contentState: ContentState) {
+  constructor(contentState: ContentState, options: Object) {
     this.contentState = contentState;
+    this.options = options;
+    if (!this.options) {
+      this.options = {};
+    }
   }
 
   generate(): string {
@@ -143,8 +148,25 @@ class MarkupGenerator {
       }
     }
     this.indent();
-    this.writeStartTag(blockType);
-    this.output.push(this.renderBlockContent(block));
+
+    let decoratorOutput = null;
+
+    if (blockType === 'atomic' && this.options && this.options.atomicDecorator) {
+      // extract custom data for user
+      const blockData = block.getEntityAt(0) ? Entity.get(block.getEntityAt(0)).getData() : null;
+      // decorator can return null, which will cause processing to occur as normal
+      const decoratorOutput = this.options.atomicDecorator(block, blockData);
+      if (decoratorOutput !== null) {
+        this.output.push(decoratorOutput);
+        this.output.push(`\n`);
+      }
+    }
+
+    // Avoid writing start and end tags for decorator output
+    if (decoratorOutput === null) {
+      this.writeStartTag(blockType);
+      this.output.push(this.renderBlockContent(block));
+    }
     // Look ahead and see if we will nest list.
     let nextBlock = this.getNextBlock();
     if (
@@ -166,7 +188,9 @@ class MarkupGenerator {
     } else {
       this.currentBlock += 1;
     }
-    this.writeEndTag(blockType);
+    if (decoratorOutput === null) {
+      this.writeEndTag(blockType);
+    }
   }
 
   processBlocksAtDepth(depth: number) {
@@ -267,6 +291,13 @@ class MarkupGenerator {
         let strAttrs = stringifyAttrs(attrs);
         return `<img${strAttrs}/>`;
       } else {
+        if (this.options.inlineDecorator) {
+          const ret = this.options.inlineDecorator(entity, content);
+          if (ret !== null) {
+            return ret;
+          }
+        }
+
         return content;
       }
     }).join('');
@@ -332,6 +363,6 @@ function encodeAttr(text: string): string {
     .split('"').join('&quot;');
 }
 
-export default function stateToHTML(content: ContentState): string {
-  return new MarkupGenerator(content).generate();
+export default function stateToHTML(content: ContentState, options: Object): string {
+  return new MarkupGenerator(content, options).generate();
 }
