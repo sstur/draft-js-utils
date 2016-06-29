@@ -14,6 +14,11 @@ import type {CharacterMetaList} from 'draft-js-utils';
 
 type StringMap = {[key: string]: ?string};
 type AttrMap = {[key: string]: StringMap};
+type CustomStyleMap = {[styleName: string]: { [key: string]: string }};
+
+type Options = {
+  customStyleMap?: CustomStyleMap;
+};
 
 const {
   BOLD,
@@ -113,7 +118,7 @@ class MarkupGenerator {
   totalBlocks: number;
   wrapperTag: ?string;
 
-  constructor(contentState: ContentState, options) {
+  constructor(contentState: ContentState, options: Options) {
     this.contentState = contentState;
     this.customStyleMap = options.customStyleMap || {};
   }
@@ -341,6 +346,6 @@ function encodeAttr(text: string): string {
     .split('"').join('&quot;');
 }
 
-export default function stateToHTML(content: ContentState, options: ?Object): string {
+export default function stateToHTML(content: ContentState, options: ?Options): string {
   return new MarkupGenerator(content, options || {}).generate();
 }
