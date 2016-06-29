@@ -10,8 +10,31 @@ It was extracted from [React-RTE](https://react-rte.org) and placed into a separ
 
 ## How to Use
 
-    import {stateToHTML} from 'draft-js-export-html';
-    let html = stateToHTML(contentState);
+```javascript
+  import {stateToHTML} from 'draft-js-export-html';
+  let html = stateToHTML(contentState);
+```
+
+## Options
+
+`stateToHTML` accepts an optional options object as a second argument.
+
+| Option key     | Option Description   |
+| -------------- | -------------------- |
+| customStyleMap | Custom style mapping object, similar to the [customStyleMap](https://facebook.github.io/draft-js/docs/advanced-topics-inline-styles.html#mapping-a-style-string-to-css) the draft-js `Editor` receives.  |
+
+Example of options usage:
+
+```javascript
+  import {stateToHTML} from 'draft-js-export-html';
+  let options = {
+    customStyleMap: {
+      'RED': { color: 'red' }
+    }
+  };
+  let html = stateToHTML(contentState, options);
+```
+
 
 This project is still under development. If you want to help out, please open an issue to discuss or join us on [Slack](https://draftjs.slack.com/).
 

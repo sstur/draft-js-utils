@@ -27,7 +27,8 @@ describe('stateToHTML', () => {
     let {description, state, html} = testCase;
     it(`should render ${description}`, () => {
       let contentState = convertFromRaw(state);
-      expect(stateToHTML(contentState)).toBe(html);
+      let options = {customStyleMap: {'RED': { color: 'red' }}};
+      expect(stateToHTML(contentState, options)).toBe(html);
     });
   });
 });

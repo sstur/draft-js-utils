@@ -7,6 +7,7 @@ import {
   ENTITY_TYPE,
   INLINE_STYLE,
 } from 'draft-js-utils';
+import styleToCssString from './styleToCssString';
 
 import type {ContentState, ContentBlock, EntityInstance} from 'draft-js';
 import type {CharacterMetaList} from 'draft-js-utils';
@@ -112,8 +113,9 @@ class MarkupGenerator {
   totalBlocks: number;
   wrapperTag: ?string;
 
-  constructor(contentState: ContentState) {
+  constructor(contentState: ContentState, options) {
     this.contentState = contentState;
+    this.customStyleMap = options.customStyleMap || {};
   }
 
   generate(): string {
@@ -253,6 +255,13 @@ class MarkupGenerator {
           // block in a `<code>` so don't wrap inline code elements.
           content = (blockType === BLOCK_TYPE.CODE) ? content : `<code>${content}</code>`;
         }
+        // Apply custom styles supplied by the user
+        Object.keys(this.customStyleMap).forEach(key => {
+          if (this.customStyleMap.hasOwnProperty(key) && style.has(key)) {
+              content = `<span style="${styleToCssString(this.customStyleMap[key])}">${content}</span>`;
+          }
+        });
+
         return content;
       }).join('');
       let entity = entityKey ? Entity.get(entityKey) : null;
@@ -332,6 +341,6 @@ function encodeAttr(text: string): string {
     .split('"').join('&quot;');
 }
 
-export default function stateToHTML(content: ContentState): string {
-  return new MarkupGenerator(content).generate();
+export default function stateToHTML(content: ContentState, options: ?Object): string {
+  return new MarkupGenerator(content, options || {}).generate();
 }
