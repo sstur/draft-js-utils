@@ -261,9 +261,9 @@ class MarkupGenerator {
           content = (blockType === BLOCK_TYPE.CODE) ? content : `<code>${content}</code>`;
         }
         // Apply custom styles supplied by the user
-        Object.keys(this.customStyleMap).forEach(key => {
+        Object.keys(this.customStyleMap).forEach((key) => {
           if (this.customStyleMap.hasOwnProperty(key) && style.has(key)) {
-              content = `<span style="${styleToCssString(this.customStyleMap[key])}">${content}</span>`;
+            content = `<span style="${styleToCssString(this.customStyleMap[key])}">${content}</span>`;
           }
         });
 

@@ -8,7 +8,6 @@ import hyphenateStyleName from 'fbjs/lib/hyphenateStyleName';
 const isArray = Array.isArray;
 const keys = Object.keys;
 
-let counter = 1;
 // Follows syntax at https://developer.mozilla.org/en-US/docs/Web/CSS/content,
 // including multiple space separated values.
 let unquotedContentValueRegex = /^(normal|none|(\b(url\([^)]*\)|chapter_counter|attr\([^)]*\)|(no-)?(open|close)-quote|inherit)((\b\s*)|$|\s+))+)$/;
@@ -16,8 +15,7 @@ let unquotedContentValueRegex = /^(normal|none|(\b(url\([^)]*\)|chapter_counter|
 function buildRule(key, value) {
   if (!isUnitlessNumber[key] && typeof value === 'number') {
     value = '' + value + 'px';
-  }
-  else if (key === 'content' && !unquotedContentValueRegex.test(value)) {
+  } else if (key === 'content' && !unquotedContentValueRegex.test(value)) {
     value = "'" + value.replace(/'/g, "\\'") + "'";
   }
 
@@ -25,7 +23,7 @@ function buildRule(key, value) {
 }
 
 export default function styleToCssString(rules) {
-  let result = ''
+  let result = '';
 
   if (!rules || keys(rules).length === 0) {
     return result;
@@ -39,10 +37,9 @@ export default function styleToCssString(rules) {
 
     if (isArray(value)) {
       for (let i = 0, len = value.length; i < len; i++) {
-          result += buildRule(styleKey, value[i]);
+        result += buildRule(styleKey, value[i]);
       }
-    }
-    else {
+    } else {
       result += buildRule(styleKey, value);
     }
   }

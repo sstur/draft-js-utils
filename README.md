@@ -29,7 +29,7 @@ Example of options usage:
   import {stateToHTML} from 'draft-js-export-html';
   let options = {
     customStyleMap: {
-      'RED': { color: 'red' }
+      RED: { color: 'red' }
     }
   };
   let html = stateToHTML(contentState, options);
