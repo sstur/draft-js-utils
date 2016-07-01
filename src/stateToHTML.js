@@ -7,12 +7,18 @@ import {
   ENTITY_TYPE,
   INLINE_STYLE,
 } from 'draft-js-utils';
+import styleToCssString from './styleToCssString';
 
 import type {ContentState, ContentBlock, EntityInstance} from 'draft-js';
 import type {CharacterMetaList} from 'draft-js-utils';
 
 type StringMap = {[key: string]: ?string};
 type AttrMap = {[key: string]: StringMap};
+type CustomStyleMap = {[styleName: string]: { [key: string]: string }};
+
+type Options = {
+  customStyleMap?: CustomStyleMap;
+};
 
 const {
   BOLD,
@@ -111,9 +117,11 @@ class MarkupGenerator {
   output: Array<string>;
   totalBlocks: number;
   wrapperTag: ?string;
+  customStyleMap: CustomStyleMap;
 
-  constructor(contentState: ContentState) {
+  constructor(contentState: ContentState, options: Options) {
     this.contentState = contentState;
+    this.customStyleMap = options.customStyleMap || {};
   }
 
   generate(): string {
@@ -253,6 +261,13 @@ class MarkupGenerator {
           // block in a `<code>` so don't wrap inline code elements.
           content = (blockType === BLOCK_TYPE.CODE) ? content : `<code>${content}</code>`;
         }
+        // Apply custom styles supplied by the user
+        Object.keys(this.customStyleMap).forEach((key) => {
+          if (this.customStyleMap.hasOwnProperty(key) && style.has(key)) {
+            content = `<span style="${styleToCssString(this.customStyleMap[key])}">${content}</span>`;
+          }
+        });
+
         return content;
       }).join('');
       let entity = entityKey ? Entity.get(entityKey) : null;
@@ -332,6 +347,6 @@ function encodeAttr(text: string): string {
     .split('"').join('&quot;');
 }
 
-export default function stateToHTML(content: ContentState): string {
-  return new MarkupGenerator(content).generate();
+export default function stateToHTML(content: ContentState, options: ?Options): string {
+  return new MarkupGenerator(content, options || {}).generate();
 }

@@ -33,3 +33,7 @@
   <li>One</li>
   <li>Two</li>
 </ol>
+
+# Entity with a custom inline style
+{"entityMap":{"0":{"type":"LINK","mutability":"MUTABLE","data":{"url":"/"}}},"blocks":[{"key":"8r91j","text":"a","type":"unstyled","depth":0,"inlineStyleRanges":[{"offset":0,"length":1,"style":"RED"}],"entityRanges":[{"offset":0,"length":1,"key":0}]}]}
+<p><a href="/"><span style="color: red;">a</span></a></p>
