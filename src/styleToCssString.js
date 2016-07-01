@@ -24,12 +24,13 @@ function buildRule(key, value) {
 
 export default function styleToCssString(rules) {
   let result = '';
+  let rulesKeys = keys(rules);
 
-  if (!rules || keys(rules).length === 0) {
+  if (!rules || rulesKeys.length === 0) {
     return result;
   }
 
-  let styleKeys = keys(rules);
+  let styleKeys = rulesKeys;
 
   for (var j = 0, l = styleKeys.length; j < l; j++) {
     let styleKey = styleKeys[j];

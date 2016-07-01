@@ -117,6 +117,7 @@ class MarkupGenerator {
   output: Array<string>;
   totalBlocks: number;
   wrapperTag: ?string;
+  customStyleMap: CustomStyleMap;
 
   constructor(contentState: ContentState, options: Options) {
     this.contentState = contentState;
