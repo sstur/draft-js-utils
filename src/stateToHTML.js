@@ -94,6 +94,8 @@ function getTags(blockType: string): Array<string> {
       return ['blockquote'];
     case BLOCK_TYPE.CODE:
       return ['code'];
+    case BLOCK_TYPE.ATOMIC:
+      return ['figure'];
     default:
       return ['p'];
   }
