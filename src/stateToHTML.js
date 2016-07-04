@@ -54,8 +54,6 @@ const DATA_TO_ATTR = {
     return attrs;
   },
   [ENTITY_TYPE.IMAGE](entityType: string, entity: EntityInstance): StringMap {
-    console.log(entity.getData());
-
     let attrMap = ENTITY_ATTR_MAP.hasOwnProperty(entityType) ? ENTITY_ATTR_MAP[entityType] : {};
     let data = entity.getData();
     let attrs = {};
@@ -92,7 +90,7 @@ function getTags(blockType: string): Array<string> {
     case BLOCK_TYPE.BLOCKQUOTE:
       return ['blockquote'];
     case BLOCK_TYPE.CODE:
-      return ['pre', 'code'];
+      return ['code'];
     default:
       return ['p'];
   }
@@ -104,6 +102,8 @@ function getWrapperTag(blockType: string): ?string {
       return 'ul';
     case BLOCK_TYPE.ORDERED_LIST_ITEM:
       return 'ol';
+    case BLOCK_TYPE.CODE:
+      return 'pre';
     default:
       return null;
   }
