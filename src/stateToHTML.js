@@ -29,7 +29,14 @@ const DATA_ATTRIBUTE = /^data-([a-z0-9-]+)$/;
 // Map entity data to element attributes.
 const ENTITY_ATTR_MAP: AttrMap = {
   [ENTITY_TYPE.LINK]: {url: 'href', rel: 'rel', target: 'target', title: 'title', className: 'class'},
-  [ENTITY_TYPE.IMAGE]: {src: 'src', height: 'height', width: 'width', alt: 'alt', className: 'class'},
+  [ENTITY_TYPE.IMAGE]: {
+    src: 'src', 
+    height: 'height', 
+    width: 'width', 
+    alt: 'alt', 
+    className: 'class',
+    id: 'id',
+  },
 };
 
 // Map entity data to element attributes.
@@ -88,7 +95,9 @@ function getTags(blockType: string): Array<string> {
     case BLOCK_TYPE.BLOCKQUOTE:
       return ['blockquote'];
     case BLOCK_TYPE.CODE:
-      return ['pre', 'code'];
+      return ['code'];
+    case BLOCK_TYPE.ATOMIC:
+      return ['figure'];
     default:
       return ['p'];
   }
@@ -100,6 +109,8 @@ function getWrapperTag(blockType: string): ?string {
       return 'ul';
     case BLOCK_TYPE.ORDERED_LIST_ITEM:
       return 'ol';
+    case BLOCK_TYPE.CODE:
+      return 'pre';
     default:
       return null;
   }
