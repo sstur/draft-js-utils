@@ -26,6 +26,8 @@ type RenderConfig = {
 };
 
 type BlockRenderer = (block: ContentBlock) => ?string;
+type BlockTags = (blockType: string) => Array<string>;
+type BlockWrapperTag = (blockType: string) => ?string;
 type BlockRendererMap = {[blockType: string]: BlockRenderer};
 
 type StyleMap = {[styleName: string]: RenderConfig};
@@ -33,6 +35,8 @@ type StyleMap = {[styleName: string]: RenderConfig};
 type Options = {
   inlineStyles?: StyleMap;
   blockRenderers?: BlockRendererMap;
+  blockTags?: BlockTags;
+  blockWrapperTag?: BlockWrapperTag;
 };
 
 const {
@@ -153,6 +157,8 @@ class MarkupGenerator {
   options: Options;
   inlineStyles: StyleMap;
   styleOrder: Array<string>;
+  blockTags: BlockTags;
+  blockWrapperTag: BlockWrapperTag;
 
   constructor(contentState: ContentState, options: ?Options) {
     if (options == null) {
@@ -166,6 +172,8 @@ class MarkupGenerator {
     );
     this.inlineStyles = inlineStyles;
     this.styleOrder = styleOrder;
+    this.blockTags = options.blockTags || getTags;
+    this.blockWrapperTag = options.blockWrapperTag || getWrapperTag;
   }
 
   generate(): string {
@@ -186,7 +194,7 @@ class MarkupGenerator {
     let {blockRenderers} = this.options;
     let block = this.blocks[this.currentBlock];
     let blockType = block.getType();
-    let newWrapperTag = getWrapperTag(blockType);
+    let newWrapperTag = this.blockWrapperTag(blockType);
     if (this.wrapperTag !== newWrapperTag) {
       if (this.wrapperTag) {
         this.closeWrapperTag();
@@ -248,14 +256,14 @@ class MarkupGenerator {
   }
 
   writeStartTag(blockType) {
-    let tags = getTags(blockType);
+    let tags = this.blockTags(blockType);
     for (let tag of tags) {
       this.output.push(`<${tag}>`);
     }
   }
 
   writeEndTag(blockType) {
-    let tags = getTags(blockType);
+    let tags = this.blockTags(blockType);
     if (tags.length === 1) {
       this.output.push(`</${tags[0]}>\n`);
     } else {
