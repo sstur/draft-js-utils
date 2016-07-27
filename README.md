@@ -63,6 +63,71 @@ let options = {
 let html = stateToHTML(contentState, options);
 ```
 
+### `blockTags`
+
+You can define custom block tags for specific types. Pass a function that accepts `blockType` as an argument. You may want to use this over `blockRenderers` when you want all the default processing of attributes, styles, etc... but want to simply use a different tag for a block type. The reason this returns an array is because a single block might get wrapped in two tags.
+
+Example:
+
+```javascript
+import { BLOCK_TYPE } from 'draft-js-utils';
+
+let options = {
+  blockTags: function(blockType) {
+    switch (blockType) {
+      case BLOCK_TYPE.HEADER_ONE:
+        return ['h1'];
+      case BLOCK_TYPE.HEADER_TWO:
+        return ['h2'];
+      case BLOCK_TYPE.HEADER_THREE:
+        return ['h3'];
+      case BLOCK_TYPE.HEADER_FOUR:
+        return ['h4'];
+      case BLOCK_TYPE.HEADER_FIVE:
+        return ['h5'];
+      case BLOCK_TYPE.HEADER_SIX:
+        return ['h6'];
+      case BLOCK_TYPE.UNORDERED_LIST_ITEM:
+      case BLOCK_TYPE.ORDERED_LIST_ITEM:
+        return ['li'];
+      case BLOCK_TYPE.BLOCKQUOTE:
+        return ['blockquote'];
+      case BLOCK_TYPE.CODE:
+        return ['pre', 'code'];
+      case BLOCK_TYPE.ATOMIC:
+        return ['figure'];
+      default:
+        return ['p'];
+    }
+  },
+};
+let html = stateToHTML(contentState, options);
+```
+
+### `blockWrapperTag`
+
+You can specify custom block wrapper tags. Pass a function that accepts `blockType` as an argument. You can return a string or null.
+
+Example:
+
+```javascript
+import { BLOCK_TYPE } from 'draft-js-utils';
+
+let options = {
+  blockWrapperTag: function(blockType) {
+    switch (blockType) {
+      case BLOCK_TYPE.UNORDERED_LIST_ITEM:
+        return 'ul';
+      case BLOCK_TYPE.ORDERED_LIST_ITEM:
+        return 'ol';
+      default:
+        return null;
+    }
+  },
+};
+let html = stateToHTML(contentState, options);
+```
+
 ## Contributing
 
 If you want to help out, please open an issue to discuss or join us on [Slack](https://draftjs.slack.com/).
