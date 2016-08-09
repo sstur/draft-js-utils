@@ -77,4 +77,26 @@ describe('stateToHTML', () => {
       '<h1>Hello <em>world</em>.</h1>'
     );
   });
+
+  it('should support custom entities renderer', () => {
+    let options = {
+      entityRenderers: {
+        COLOR: {
+          attributeMap: {color: 'color'},
+          render: (attrs, content) => {
+            const {color} = attrs;
+
+            return `<span style="color: ${color}">${content}</span>`;
+          },
+        },
+      },
+    };
+    let contentState = convertFromRaw(
+      //<span style="color: #f40000"><h2>red</h2></span>
+      {"entityMap":{"0":{"type":"COLOR","mutability":"MUTABLE","data":{"color":"#f40000"}}},"blocks":[{"key":"16bo7","text":"Red","type":"header-two","depth":0,"inlineStyleRanges":[],"entityRanges":[{"offset":0,"length":3,"key":0}]}]} // eslint-disable-line
+    );
+    expect(stateToHTML(contentState, options)).toBe(
+      '<h2><span style="color: #f40000">Red</span></h2>'
+    );
+  });
 });
