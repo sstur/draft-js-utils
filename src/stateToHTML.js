@@ -30,9 +30,16 @@ type BlockRendererMap = {[blockType: string]: BlockRenderer};
 
 type StyleMap = {[styleName: string]: RenderConfig};
 
+type EntityRenderer = {
+  render: (attrs: Attributes, content: string, attributeString: string) => ?string;
+  attributeMap: AttrMap;
+};
+type EntityRendererMap = {[entityType: string]: EntityRenderer};
+
 type Options = {
   inlineStyles?: StyleMap;
   blockRenderers?: BlockRendererMap;
+  entityRenderers?: EntityRendererMap;
 };
 
 const {
@@ -59,44 +66,31 @@ const DEFAULT_STYLE_MAP = {
 // Examle: <em><strong>foo</strong></em>
 const DEFAULT_STYLE_ORDER = [BOLD, ITALIC, UNDERLINE, STRIKETHROUGH, CODE];
 
-// Map entity data to element attributes.
-const ENTITY_ATTR_MAP: {[entityType: string]: AttrMap} = {
-  [ENTITY_TYPE.LINK]: {url: 'href', rel: 'rel', target: 'target', title: 'title', className: 'class'},
-  [ENTITY_TYPE.IMAGE]: {src: 'src', height: 'height', width: 'width', alt: 'alt', className: 'class'},
+const DEFAULT_ENTITY_RENDERER = {
+  [ENTITY_TYPE.LINK]: {
+    attributeMap: {url: 'href', rel: 'rel', target: 'target', title: 'title', className: 'class'},
+    render: (attrs, content, attributeString) => `<a${attributeString}>${content}</a>`,
+  },
+  [ENTITY_TYPE.IMAGE]: {
+    attributeMap: {src: 'src', height: 'height', width: 'width', alt: 'alt', className: 'class'},
+    render: (attrs, content, attributeString) => `<img${attributeString}/>`,
+  },
 };
 
-// Map entity data to element attributes.
-const DATA_TO_ATTR = {
-  [ENTITY_TYPE.LINK](entityType: string, entity: EntityInstance): Attributes {
-    let attrMap = ENTITY_ATTR_MAP.hasOwnProperty(entityType) ? ENTITY_ATTR_MAP[entityType] : {};
-    let data = entity.getData();
-    let attrs = {};
-    for (let dataKey of Object.keys(data)) {
-      let dataValue = data[dataKey];
-      if (attrMap.hasOwnProperty(dataKey)) {
-        let attrKey = attrMap[dataKey];
-        attrs[attrKey] = dataValue;
-      } else if (DATA_ATTRIBUTE.test(dataKey)) {
-        attrs[dataKey] = dataValue;
-      }
+const convertDataToAttr = (entity: EntityInstance, attributeMap: AttrMap) => {
+  let data = entity.getData();
+  let attrs = {};
+
+  for (let dataKey of Object.keys(data)) {
+    let dataValue = data[dataKey];
+    if (attributeMap.hasOwnProperty(dataKey)) {
+      let attrKey = attributeMap[dataKey];
+      attrs[attrKey] = dataValue;
+    } else if (DATA_ATTRIBUTE.test(dataKey)) {
+      attrs[dataKey] = dataValue;
     }
-    return attrs;
-  },
-  [ENTITY_TYPE.IMAGE](entityType: string, entity: EntityInstance): Attributes {
-    let attrMap = ENTITY_ATTR_MAP.hasOwnProperty(entityType) ? ENTITY_ATTR_MAP[entityType] : {};
-    let data = entity.getData();
-    let attrs = {};
-    for (let dataKey of Object.keys(data)) {
-      let dataValue = data[dataKey];
-      if (attrMap.hasOwnProperty(dataKey)) {
-        let attrKey = attrMap[dataKey];
-        attrs[attrKey] = dataValue;
-      } else if (DATA_ATTRIBUTE.test(dataKey)) {
-        attrs[dataKey] = dataValue;
-      }
-    }
-    return attrs;
-  },
+  }
+  return attrs;
 };
 
 // The reason this returns an array is because a single block might get wrapped
@@ -158,6 +152,9 @@ class MarkupGenerator {
     if (options == null) {
       options = {};
     }
+
+    options.entityRenderers = Object.assign({}, DEFAULT_ENTITY_RENDERER, options.entityRenderers);
+
     this.contentState = contentState;
     this.options = options;
     let [inlineStyles, styleOrder] = combineOrderedStyles(
@@ -288,6 +285,8 @@ class MarkupGenerator {
   }
 
   renderBlockContent(block: ContentBlock): string {
+    let {entityRenderers} = this.options;
+
     let blockType = block.getType();
     let text = block.getText();
     if (text === '') {
@@ -322,20 +321,26 @@ class MarkupGenerator {
         }
         return content;
       }).join('');
+
       let entity = entityKey ? Entity.get(entityKey) : null;
       // Note: The `toUpperCase` below is for compatability with some libraries that use lower-case for image blocks.
       let entityType = (entity == null) ? null : entity.getType().toUpperCase();
-      if (entityType != null && entityType === ENTITY_TYPE.LINK) {
-        let attrs = DATA_TO_ATTR.hasOwnProperty(entityType) ? DATA_TO_ATTR[entityType](entityType, entity) : null;
-        let attrString = stringifyAttrs(attrs);
-        return `<a${attrString}>${content}</a>`;
-      } else if (entityType != null && entityType === ENTITY_TYPE.IMAGE) {
-        let attrs = DATA_TO_ATTR.hasOwnProperty(entityType) ? DATA_TO_ATTR[entityType](entityType, entity) : null;
-        let attrString = stringifyAttrs(attrs);
-        return `<img${attrString}/>`;
-      } else {
+
+      if (entityType == null) {
         return content;
       }
+
+      let renderer = (entityRenderers != null && entityRenderers.hasOwnProperty(entityType)) ?
+        entityRenderers[entityType] :
+        null;
+
+      if (renderer == null) {
+        return content;
+      }
+
+      let attributes = convertDataToAttr(entity, renderer.attributeMap);
+
+      return renderer.render(attributes, content, stringifyAttrs(attributes));
     }).join('');
   }
 
