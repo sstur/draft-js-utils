@@ -16,7 +16,7 @@
     "draft-js-utils": "^0.1.5"
   },
   "peerDependencies": {
-    "draft-js": ">=0.6.0",
+    "draft-js": ">=0.8.0",
     "immutable": "3.x.x"
   },
   "devDependencies": {

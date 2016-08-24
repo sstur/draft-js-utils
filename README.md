@@ -63,6 +63,33 @@ let options = {
 let html = stateToHTML(contentState, options);
 ```
 
+### `blockStyleFn`
+
+You can define custom styles and attributes for your block, utilizing the underlying built-in rendering logic of the tags, but adding your own attributes or styles on top. The `blockStyleFn` option takes a block and returns an Object similar to `inlineStyles` of the following signature or null:
+
+```js
+{
+  attributes: {}
+  style: {}
+}
+```
+
+Example:
+```js
+let options = {
+  blockStyleFn(block) => {
+    if (block.getData().get('color')) {
+      return {
+        style: {
+          color: block.getData().get('color')
+        }
+      }
+    }
+  }
+}
+let html = stateToHTML(contentState, options);
+```
+
 ## Contributing
 
 If you want to help out, please open an issue to discuss or join us on [Slack](https://draftjs.slack.com/).
