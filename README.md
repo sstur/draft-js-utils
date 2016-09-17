@@ -92,7 +92,7 @@ let html = stateToHTML(contentState, options);
 
 ## Contributing
 
-If you want to help out, please open an issue to discuss or join us on [Slack](https://draftjs.slack.com/).
+If you want to help out, please open an issue to discuss or join us on [Slack](https://draftjs.herokuapp.com/).
 
 ## License
 
