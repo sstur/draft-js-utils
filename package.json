@@ -3,6 +3,7 @@
   "version": "0.5.1",
   "description": "DraftJS: Export ContentState to HTML",
   "main": "lib/main.js",
+  "typings": "typings/intex.d.ts",
   "scripts": {
     "build": "babel src --ignore \"_*\" --out-dir lib",
     "lint": "eslint --max-warnings 0 .",
@@ -20,6 +21,7 @@
     "immutable": "3.x.x"
   },
   "devDependencies": {
+    "@types/draft-js": "^0.7.33",
     "babel-cli": "^6.10.1",
     "babel-core": "^6.9.1",
     "babel-eslint": "^7.0.0",
