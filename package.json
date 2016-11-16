@@ -1,6 +1,6 @@
 {
   "name": "draft-js-export-html",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "DraftJS: Export ContentState to HTML",
   "main": "lib/main.js",
   "typings": "typings/intex.d.ts",
