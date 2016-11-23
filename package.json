@@ -3,7 +3,7 @@
   "version": "0.5.2",
   "description": "DraftJS: Export ContentState to HTML",
   "main": "lib/main.js",
-  "typings": "typings/intex.d.ts",
+  "typings": "typings/index.d.ts",
   "scripts": {
     "build": "babel src --ignore \"_*\" --out-dir lib",
     "lint": "eslint --max-warnings 0 .",
