@@ -186,7 +186,7 @@ class MarkupGenerator {
   }
 
   processBlock() {
-    let {blockRenderers } = this.options;
+    let {blockRenderers} = this.options;
     let block = this.blocks[this.currentBlock];
     let blockType = block.getType();
     let newWrapperTag = getWrapperTag(blockType);
@@ -291,7 +291,7 @@ class MarkupGenerator {
     let attrs = wrapperStyles && wrapperStyles[wrapperTag] && wrapperStyles[wrapperTag].attributes || {}
     this.wrapperTag = wrapperTag;
     this.indent();
-    this.output.push(`<${wrapperTag}${stringifyAttrs(attrs)}>\n`);
+    this.output.push(`<${wrapperTag}${stringifyAttrs(normalizeAttributes(attrs))}>\n`);
     this.indentLevel += 1;
   }
 
