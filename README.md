@@ -63,6 +63,55 @@ let options = {
 let html = stateToHTML(contentState, options);
 ```
 
+
+### `entityStyles`
+
+You can define any additional attributes for supported entities: LINK and IMAGE.
+
+Example:
+
+```javascript
+let options = {
+  entityStyles: {
+    LINK: {
+      attributes: {
+        class: 'entity entity--link',
+        target: '_blank',
+      }
+    }
+  },
+};
+let html = stateToHTML(contentState, options);
+```
+
+### `wrapperStyles`
+
+You can define additional attributes to lists wrappers.
+
+Example:
+
+```javascript
+let options = {
+  wrapperStyles: {
+    ul: {
+      attributes: {
+        class: 'block block--ul'
+      }
+    },
+    ol: {
+      attributes: {
+        class: 'block block--ol'
+      }
+    }
+  },
+};
+let html = stateToHTML(contentState, options);
+```
+
+
+
+
+
 ### `blockStyleFn`
 
 You can define custom styles and attributes for your block, utilizing the underlying built-in rendering logic of the tags, but adding your own attributes or styles on top. The `blockStyleFn` option takes a block and returns an Object similar to `inlineStyles` of the following signature or null:

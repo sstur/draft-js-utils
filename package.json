@@ -5,7 +5,7 @@
   "main": "lib/main.js",
   "typings": "typings/index.d.ts",
   "scripts": {
-    "build": "babel src --ignore \"_*\" --out-dir lib",
+    "build": "babel src --ignore \"_*\" --out-dir ../Stewie/node_modules/draft-js-export-html/lib",
     "lint": "eslint --max-warnings 0 .",
     "typecheck": "flow",
     "prepublish": "npm run build",

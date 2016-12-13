@@ -186,7 +186,7 @@ class MarkupGenerator {
   }
 
   processBlock() {
-    let {blockRenderers} = this.options;
+    let {blockRenderers } = this.options;
     let block = this.blocks[this.currentBlock];
     let blockType = block.getType();
     let newWrapperTag = getWrapperTag(blockType);
@@ -212,6 +212,7 @@ class MarkupGenerator {
       return;
     }
     this.writeStartTag(block);
+
     this.output.push(this.renderBlockContent(block));
     // Look ahead and see if we will nest list.
     let nextBlock = this.getNextBlock();
@@ -286,9 +287,11 @@ class MarkupGenerator {
   }
 
   openWrapperTag(wrapperTag: string) {
+    let { wrapperStyles } = this.options
+    let attrs = wrapperStyles && wrapperStyles[wrapperTag] && wrapperStyles[wrapperTag].attributes || {}
     this.wrapperTag = wrapperTag;
     this.indent();
-    this.output.push(`<${wrapperTag}>\n`);
+    this.output.push(`<${wrapperTag}${stringifyAttrs(attrs)}>\n`);
     this.indentLevel += 1;
   }
 
@@ -344,13 +347,16 @@ class MarkupGenerator {
       let entity = entityKey ? Entity.get(entityKey) : null;
       // Note: The `toUpperCase` below is for compatability with some libraries that use lower-case for image blocks.
       let entityType = (entity == null) ? null : entity.getType().toUpperCase();
+      let { entityStyles } = this.options;
       if (entityType != null && entityType === ENTITY_TYPE.LINK) {
         let attrs = DATA_TO_ATTR.hasOwnProperty(entityType) ? DATA_TO_ATTR[entityType](entityType, entity) : null;
-        let attrString = stringifyAttrs(attrs);
+        let additionalAttrs = entityStyles && entityStyles[entityType] && entityStyles[entityType].attributes || {}
+        let attrString = stringifyAttrs({ ...attrs, ...normalizeAttributes(additionalAttrs) });
         return `<a${attrString}>${content}</a>`;
       } else if (entityType != null && entityType === ENTITY_TYPE.IMAGE) {
         let attrs = DATA_TO_ATTR.hasOwnProperty(entityType) ? DATA_TO_ATTR[entityType](entityType, entity) : null;
-        let attrString = stringifyAttrs(attrs);
+        let additionalAttrs = entityStyles && entityStyles[entityType] && entityStyles[entityType].attributes || {}
+        let attrString = stringifyAttrs({ ...attrs, ...normalizeAttributes(additionalAttrs) });
         return `<img${attrString}/>`;
       } else {
         return content;
