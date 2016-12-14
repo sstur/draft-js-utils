@@ -344,24 +344,27 @@ class MarkupGenerator {
         }
         return content;
       }).join('');
+
       let entity = entityKey ? Entity.get(entityKey) : null;
       // Note: The `toUpperCase` below is for compatability with some libraries that use lower-case for image blocks.
       let entityType = (entity == null) ? null : entity.getType().toUpperCase();
-      let { entityStyles } = this.options;
       if (entityType != null && entityType === ENTITY_TYPE.LINK) {
-        let attrs = DATA_TO_ATTR.hasOwnProperty(entityType) ? DATA_TO_ATTR[entityType](entityType, entity) : null;
-        let additionalAttrs = entityStyles && entityStyles[entityType] && entityStyles[entityType].attributes || {}
-        let attrString = stringifyAttrs({ ...attrs, ...normalizeAttributes(additionalAttrs) });
+        let attrString = this.getAttributesWithEntityStyles(entityType, entity);
         return `<a${attrString}>${content}</a>`;
       } else if (entityType != null && entityType === ENTITY_TYPE.IMAGE) {
-        let attrs = DATA_TO_ATTR.hasOwnProperty(entityType) ? DATA_TO_ATTR[entityType](entityType, entity) : null;
-        let additionalAttrs = entityStyles && entityStyles[entityType] && entityStyles[entityType].attributes || {}
-        let attrString = stringifyAttrs({ ...attrs, ...normalizeAttributes(additionalAttrs) });
+        let attrString = this.getAttributesWithEntityStyles(entityType, entity);
         return `<img${attrString}/>`;
       } else {
         return content;
       }
     }).join('');
+  }
+
+  getAttributesWithEntityStyles(entityType: string, entity: Entity): string {
+    let { entityStyles } = this.options;
+    let attrs = DATA_TO_ATTR.hasOwnProperty(entityType) ? DATA_TO_ATTR[entityType](entityType, entity) : null;
+    let additionalAttrs = entityStyles && entityStyles[entityType] && entityStyles[entityType].attributes || {}
+    return stringifyAttrs({ ...attrs, ...normalizeAttributes(additionalAttrs) });
   }
 
   preserveWhitespace(text: string): string {
