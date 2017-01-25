@@ -162,8 +162,11 @@ class MarkupGenerator {
   inlineStyles: StyleMap;
   styleOrder: Array<string>;
 
-  constructor(contentState: ContentState, options: ?Options = {}) {
+  constructor(contentState: ContentState, options: ?Options) {
     this.contentState = contentState;
+    if (options == null) {
+      options = {};
+    }
     this.options = {...DEFAULT_OPTIONS, ...options};
     let [inlineStyles, styleOrder] = combineOrderedStyles(
       options.inlineStyles,
