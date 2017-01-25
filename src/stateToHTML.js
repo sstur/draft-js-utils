@@ -227,7 +227,7 @@ class MarkupGenerator {
       nextBlock.getDepth() === block.getDepth() + 1
     ) {
       if (prettyPrint) {
-        this.output.push(`\n`);
+        this.output.push('\n');
       }
       // This is a litle hacky: temporarily stash our current wrapperTag and
       // render child list(s).
