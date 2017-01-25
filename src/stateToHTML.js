@@ -36,6 +36,11 @@ type Options = {
   inlineStyles?: StyleMap;
   blockRenderers?: BlockRendererMap;
   blockStyleFn?: BlockStyleFn;
+  prettyPrint?: boolean;
+};
+
+const DEFAULT_OPTIONS = {
+  prettyPrint: true,
 };
 
 const {
@@ -157,12 +162,9 @@ class MarkupGenerator {
   inlineStyles: StyleMap;
   styleOrder: Array<string>;
 
-  constructor(contentState: ContentState, options: ?Options) {
-    if (options == null) {
-      options = {};
-    }
+  constructor(contentState: ContentState, options: ?Options = {}) {
     this.contentState = contentState;
-    this.options = options;
+    this.options = {...DEFAULT_OPTIONS, ...options};
     let [inlineStyles, styleOrder] = combineOrderedStyles(
       options.inlineStyles,
       [DEFAULT_STYLE_MAP, DEFAULT_STYLE_ORDER],
@@ -186,7 +188,7 @@ class MarkupGenerator {
   }
 
   processBlock() {
-    let {blockRenderers} = this.options;
+    let {blockRenderers, prettyPrint} = this.options;
     let block = this.blocks[this.currentBlock];
     let blockType = block.getType();
     let newWrapperTag = getWrapperTag(blockType);
@@ -198,7 +200,9 @@ class MarkupGenerator {
         this.openWrapperTag(newWrapperTag);
       }
     }
-    this.indent();
+    if (prettyPrint) {
+      this.indent();
+    }
     // Allow blocks to be rendered using a custom renderer.
     let customRenderer = (blockRenderers != null && blockRenderers.hasOwnProperty(blockType)) ?
       blockRenderers[blockType] :
@@ -207,7 +211,9 @@ class MarkupGenerator {
     // Renderer can return null, which will cause processing to continue as normal.
     if (customRendererOutput != null) {
       this.output.push(customRendererOutput);
-      this.output.push('\n');
+      if (prettyPrint) {
+        this.output.push('\n');
+      }
       this.currentBlock += 1;
       return;
     }
@@ -220,17 +226,23 @@ class MarkupGenerator {
       nextBlock &&
       nextBlock.getDepth() === block.getDepth() + 1
     ) {
-      this.output.push(`\n`);
+      if (prettyPrint) {
+        this.output.push(`\n`);
+      }
       // This is a litle hacky: temporarily stash our current wrapperTag and
       // render child list(s).
       let thisWrapperTag = this.wrapperTag;
       this.wrapperTag = null;
-      this.indentLevel += 1;
+      if (prettyPrint) {
+        this.indentLevel += 1;
+      }
       this.currentBlock += 1;
       this.processBlocksAtDepth(nextBlock.getDepth());
       this.wrapperTag = thisWrapperTag;
-      this.indentLevel -= 1;
-      this.indent();
+      if (prettyPrint) {
+        this.indentLevel -= 1;
+        this.indent();
+      }
     } else {
       this.currentBlock += 1;
     }
@@ -273,31 +285,47 @@ class MarkupGenerator {
   }
 
   writeEndTag(block) {
+    const {prettyPrint} = this.options;
     let tags = getTags(block.getType());
     if (tags.length === 1) {
-      this.output.push(`</${tags[0]}>\n`);
+      this.output.push(`</${tags[0]}>`);
     } else {
       let output = [];
       for (let tag of tags) {
         output.unshift(`</${tag}>`);
       }
-      this.output.push(output.join('') + '\n');
+      this.output.push(output.join(''));
+    }
+    if (prettyPrint) {
+      this.output.push('\n');
     }
   }
 
   openWrapperTag(wrapperTag: string) {
+    const {prettyPrint} = this.options;
     this.wrapperTag = wrapperTag;
-    this.indent();
-    this.output.push(`<${wrapperTag}>\n`);
-    this.indentLevel += 1;
+    if (prettyPrint) {
+      this.indent();
+    }
+    this.output.push(`<${wrapperTag}>`);
+    if (prettyPrint) {
+      this.output.push('\n');
+      this.indentLevel += 1;
+    }
   }
 
   closeWrapperTag() {
+    const {prettyPrint} = this.options;
     let {wrapperTag} = this;
     if (wrapperTag) {
-      this.indentLevel -= 1;
-      this.indent();
-      this.output.push(`</${wrapperTag}>\n`);
+      if (prettyPrint) {
+        this.indentLevel -= 1;
+        this.indent();
+      }
+      this.output.push(`</${wrapperTag}>`);
+      if (prettyPrint) {
+        this.output.push('\n');
+      }
       this.wrapperTag = null;
     }
   }
