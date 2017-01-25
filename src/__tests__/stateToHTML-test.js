@@ -110,4 +110,10 @@ describe('stateToHTML', () => {
       '<h1>Hello <em>world</em>.</h1>'
     );
   });
+
+  it('should support optional pretty-printing', () => {
+    let contentState = convertFromRaw({"entityMap":{},"blocks":[{"key":"b4nv7","text":"a","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"klgb","text":"b","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}]}); // eslint-disable-line
+    expect(stateToHTML(contentState, {prettyPrint: true})).toBe('<p>a</p>\n<p>b</p>');
+    expect(stateToHTML(contentState, {prettyPrint: false})).toBe('<p>a</p><p>b</p>');
+  })
 });

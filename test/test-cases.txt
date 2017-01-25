@@ -2,6 +2,11 @@
 {"entityMap":{},"blocks":[{"key":"33nh8","text":"a","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[]}]}
 <p>a</p>
 
+# two plain-text blocks
+{"entityMap":{},"blocks":[{"key":"b4nv7","text":"a","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"klgb","text":"b","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}]}
+<p>a</p>
+<p>b</p>
+
 # Single inline style
 {"entityMap":{},"blocks":[{"key":"99n0j","text":"asdf","type":"unstyled","depth":0,"inlineStyleRanges":[{"offset":3,"length":1,"style":"BOLD"}],"entityRanges":[]}]}
 <p>asd<strong>f</strong></p>
