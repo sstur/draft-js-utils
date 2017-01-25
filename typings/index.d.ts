@@ -15,6 +15,7 @@ declare module 'draft-js-export-html' {
         inlineStyles?: { [styleName: string]: RenderConfig };
         blockRenderers?: { [blockType: string]: BlockRenderer };
         blockStyleFn?: BlockStyleFn;
+        prettyPrinting? boolean;
     }
 
     export function stateToHTML(content: draftjs.ContentState, options?: Options): string;
