@@ -118,7 +118,7 @@ describe('stateToHTML', () => {
   })
 
   it('should support optional pretty-printing lists', () => {
-    let contentState = convertFromRaw({"entityMap":{},"blocks":[{"key":"33nh8","text":"An ordered list:","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[]},{"key":"8kinl","text":"One","type":"ordered-list-item","depth":0,"inlineStyleRanges":[],"entityRanges":[]},{"key":"ekll4","text":"Two","type":"ordered-list-item","depth":0,"inlineStyleRanges":[],"entityRanges":[]}]});
+    let contentState = convertFromRaw({"entityMap":{},"blocks":[{"key":"33nh8","text":"An ordered list:","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[]},{"key":"8kinl","text":"One","type":"ordered-list-item","depth":0,"inlineStyleRanges":[],"entityRanges":[]},{"key":"ekll4","text":"Two","type":"ordered-list-item","depth":0,"inlineStyleRanges":[],"entityRanges":[]}]}); // eslint-disable-line
     expect(stateToHTML(contentState, {prettyPrint: true}))
       .toBe('<p>An ordered list:</p>\n<ol>\n  <li>One</li>\n  <li>Two</li>\n</ol>');
     expect(stateToHTML(contentState, {prettyPrint: false}))
