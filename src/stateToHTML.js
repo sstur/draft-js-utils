@@ -361,9 +361,9 @@ class MarkupGenerator {
   }
 
   getAttributesWithEntityStyles(entityType: string, entity: Entity): string {
-    let { entityStyles } = this.options;
-    let attrs = DATA_TO_ATTR.hasOwnProperty(entityType) ? DATA_TO_ATTR[entityType](entityType, entity) : null;
-    let additionalAttrs = entityStyles && entityStyles[entityType] && entityStyles[entityType].attributes || {}
+    const { entityStyles } = this.options;
+    const attrs = DATA_TO_ATTR.hasOwnProperty(entityType) && DATA_TO_ATTR[entityType](entityType, entity);
+    const additionalAttrs = entityStyles && entityStyles[entityType] && entityStyles[entityType].attributes || {}
     return stringifyAttrs({ ...attrs, ...normalizeAttributes(additionalAttrs) });
   }
 
