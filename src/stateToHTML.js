@@ -4,7 +4,6 @@ import combineOrderedStyles from './helpers/combineOrderedStyles';
 import normalizeAttributes from './helpers/normalizeAttributes';
 import styleToCSS from './helpers/styleToCSS';
 
-import {Entity} from 'draft-js';
 import {
   getEntityRanges,
   BLOCK_TYPE,
@@ -341,7 +340,7 @@ class MarkupGenerator {
         }
         return content;
       }).join('');
-      let entity = entityKey ? Entity.get(entityKey) : null;
+      let entity = entityKey ? this.contentState.getEntity(entityKey) : null;
       // Note: The `toUpperCase` below is for compatability with some libraries that use lower-case for image blocks.
       let entityType = (entity == null) ? null : entity.getType().toUpperCase();
       if (entityType != null && entityType === ENTITY_TYPE.LINK) {
