@@ -212,6 +212,7 @@ class MarkupGenerator {
       return;
     }
     this.writeStartTag(block);
+
     this.output.push(this.renderBlockContent(block));
     // Look ahead and see if we will nest list.
     let nextBlock = this.getNextBlock();
@@ -286,9 +287,11 @@ class MarkupGenerator {
   }
 
   openWrapperTag(wrapperTag: string) {
+    let { wrapperStyles } = this.options
+    let attrs = wrapperStyles && wrapperStyles[wrapperTag] && wrapperStyles[wrapperTag].attributes || {}
     this.wrapperTag = wrapperTag;
     this.indent();
-    this.output.push(`<${wrapperTag}>\n`);
+    this.output.push(`<${wrapperTag}${stringifyAttrs(normalizeAttributes(attrs))}>\n`);
     this.indentLevel += 1;
   }
 
@@ -341,21 +344,27 @@ class MarkupGenerator {
         }
         return content;
       }).join('');
+
       let entity = entityKey ? Entity.get(entityKey) : null;
       // Note: The `toUpperCase` below is for compatability with some libraries that use lower-case for image blocks.
       let entityType = (entity == null) ? null : entity.getType().toUpperCase();
       if (entityType != null && entityType === ENTITY_TYPE.LINK) {
-        let attrs = DATA_TO_ATTR.hasOwnProperty(entityType) ? DATA_TO_ATTR[entityType](entityType, entity) : null;
-        let attrString = stringifyAttrs(attrs);
+        let attrString = this.getAttributesWithEntityStyles(entityType, entity);
         return `<a${attrString}>${content}</a>`;
       } else if (entityType != null && entityType === ENTITY_TYPE.IMAGE) {
-        let attrs = DATA_TO_ATTR.hasOwnProperty(entityType) ? DATA_TO_ATTR[entityType](entityType, entity) : null;
-        let attrString = stringifyAttrs(attrs);
+        let attrString = this.getAttributesWithEntityStyles(entityType, entity);
         return `<img${attrString}/>`;
       } else {
         return content;
       }
     }).join('');
+  }
+
+  getAttributesWithEntityStyles(entityType: string, entity: Entity): string {
+    const { entityStyles } = this.options;
+    const attrs = DATA_TO_ATTR.hasOwnProperty(entityType) && DATA_TO_ATTR[entityType](entityType, entity);
+    const additionalAttrs = entityStyles && entityStyles[entityType] && entityStyles[entityType].attributes || {}
+    return stringifyAttrs({ ...attrs, ...normalizeAttributes(additionalAttrs) });
   }
 
   preserveWhitespace(text: string): string {

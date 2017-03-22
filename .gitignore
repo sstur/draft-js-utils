@@ -3,4 +3,5 @@ _*
 /lib
 /node_modules
 *.log
+.idea
 
