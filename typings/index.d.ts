@@ -17,5 +17,5 @@ declare module 'draft-js-export-html' {
         blockStyleFn?: BlockStyleFn;
     }
 
-    export function stateToHTML(content: draftjs.EditorState, options?: Options): string;
+    export function stateToHTML(content: draftjs.ContentState, options?: Options): string;
 }

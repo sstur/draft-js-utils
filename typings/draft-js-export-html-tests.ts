@@ -1,7 +1,7 @@
 import {EditorState, ContentBlock} from 'draft-js';
 import {stateToHTML} from 'draft-js-export-html';
 
-const state = EditorState.createEmpty();
+const state = EditorState.createEmpty().getCurrentContent();
 
 let res: string = stateToHTML(state);
 res = stateToHTML(state, {

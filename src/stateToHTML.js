@@ -341,7 +341,7 @@ class MarkupGenerator {
         }
         return content;
       }).join('');
-      let entity = entityKey ? Entity.get(entityKey) : null;
+      let entity = entityKey ? getEntity(this.contentState, entityKey) : null;
       // Note: The `toUpperCase` below is for compatability with some libraries that use lower-case for image blocks.
       let entityType = (entity == null) ? null : entity.getType().toUpperCase();
       if (entityType != null && entityType === ENTITY_TYPE.LINK) {
@@ -375,6 +375,10 @@ class MarkupGenerator {
     return newText.join('');
   }
 
+}
+
+function getEntity(contentState, entityKey) {
+  return contentState.getEntity ? contentState.getEntity(entityKey) : Entity.get(entityKey);
 }
 
 function stringifyAttrs(attrs: ?Attributes) {

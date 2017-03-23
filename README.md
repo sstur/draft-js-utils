@@ -52,9 +52,9 @@ Example:
 ```javascript
 let options = {
   blockRenderers: {
-    ATOMIC: (block) => {
+    atomic: (block) => {
       let data = block.getData();
-      if (data.foo === 'bar') {
+      if (data.get('foo') === 'bar') {
         return '<div>' + escape(block.getText()) + '</div>';
       }
     },
