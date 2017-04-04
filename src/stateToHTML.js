@@ -64,7 +64,7 @@ const DEFAULT_STYLE_ORDER = [BOLD, ITALIC, UNDERLINE, STRIKETHROUGH, CODE];
 
 // Map entity data to element attributes.
 const ENTITY_ATTR_MAP: {[entityType: string]: AttrMap} = {
-  [ENTITY_TYPE.LINK]: {url: 'href', rel: 'rel', target: 'target', title: 'title', className: 'class'},
+  [ENTITY_TYPE.LINK]: {url: 'href', href: 'href', rel: 'rel', target: 'target', title: 'title', className: 'class'},
   [ENTITY_TYPE.IMAGE]: {src: 'src', height: 'height', width: 'width', alt: 'alt', className: 'class'},
 };
 
@@ -220,7 +220,7 @@ class MarkupGenerator {
       nextBlock &&
       nextBlock.getDepth() === block.getDepth() + 1
     ) {
-      this.output.push(`\n`);
+      this.output.push('\n');
       // This is a litle hacky: temporarily stash our current wrapperTag and
       // render child list(s).
       let thisWrapperTag = this.wrapperTag;
