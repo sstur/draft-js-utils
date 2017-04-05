@@ -31,11 +31,13 @@ type BlockRendererMap = {[blockType: string]: BlockRenderer};
 type StyleMap = {[styleName: string]: RenderConfig};
 
 type BlockStyleFn = (block: ContentBlock) => ?RenderConfig;
+type EntityStyleFn = (entity: Entity) => ?RenderConfig;
 
 type Options = {
   inlineStyles?: StyleMap;
   blockRenderers?: BlockRendererMap;
   blockStyleFn?: BlockStyleFn;
+  entityStyleFn?: EntityStyleFn;
 };
 
 const {
