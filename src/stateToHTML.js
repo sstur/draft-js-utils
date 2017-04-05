@@ -344,7 +344,21 @@ class MarkupGenerator {
       let entity = entityKey ? getEntity(this.contentState, entityKey) : null;
       // Note: The `toUpperCase` below is for compatability with some libraries that use lower-case for image blocks.
       let entityType = (entity == null) ? null : entity.getType().toUpperCase();
-      if (entityType != null && entityType === ENTITY_TYPE.LINK) {
+      let entityStyle;
+      if (entity != null && this.options.entityStyleFn && (entityStyle = this.options.entityStyleFn(entity))) {
+        let {element, attributes, style} = entityStyle;
+        if (element == null) {
+          element = 'span';
+        }
+        // Normalize `className` -> `class`, etc.
+        attributes = normalizeAttributes(attributes);
+        if (style != null) {
+          let styleAttr = styleToCSS(style);
+          attributes = (attributes == null) ? {style: styleAttr} : {...attributes, style: styleAttr};
+        }
+        let attrString = stringifyAttrs(attributes);
+        return `<${element}${attrString}>${content}</${element}>`;
+      } else if (entityType != null && entityType === ENTITY_TYPE.LINK) {
         let attrs = DATA_TO_ATTR.hasOwnProperty(entityType) ? DATA_TO_ATTR[entityType](entityType, entity) : null;
         let attrString = stringifyAttrs(attrs);
         return `<a${attrString}>${content}</a>`;

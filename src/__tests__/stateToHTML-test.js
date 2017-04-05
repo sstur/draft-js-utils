@@ -110,4 +110,32 @@ describe('stateToHTML', () => {
       '<h1>Hello <em>world</em>.</h1>'
     );
   });
+
+  it('should support custom entity styles', () => {
+    let options = {
+      entityStyleFn: (entity) => {
+        let entityType = entity.getType().toUpperCase();
+        if (entityType === 'MENTION') {
+          return {
+            element: 'a',
+            attributes: {
+              href: `/users/${entity.getData()['userId']}`,
+              class: 'mention',
+            },
+          };
+        }
+      },
+    };
+    let contentState1 = convertFromRaw(
+      // <p><em>a</em></p>
+      {"entityMap":{"0":{"type":"MENTION","mutability":"MUTABLE","data":{"userId":"mikaelwaltersson"}}},"blocks":[{"key":"8r91j","text":"a","type":"unstyled","depth":0,"inlineStyleRanges":[{"offset":0,"length":1,"style":"ITALIC"}],"entityRanges":[{"offset":0,"length":1,"key":0}]}]} // eslint-disable-line
+    );
+    if (contentState1.getFirstBlock().getData == null) {
+      // Older DraftJS does not support block.getData()
+      return;
+    }
+    expect(stateToHTML(contentState1, options)).toBe(
+      '<p><a href="/users/mikaelwaltersson" class="mention"><em>a</em></a></p>'
+    );
+  });
 });
