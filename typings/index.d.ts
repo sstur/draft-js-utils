@@ -4,7 +4,7 @@ declare module 'draft-js-export-html' {
     import draftjs = require("draft-js");
 
     type BlockStyleFn = (block: draftjs.ContentBlock) => RenderConfig;
-    type EntityStyleFn = (entity: draftjs.Entity) => RenderConfig;
+    type EntityStyleFn = (entity: draftjs.EntityInstance) => RenderConfig;
     type BlockRenderer = (block: draftjs.ContentBlock) => string;
     type RenderConfig = {
         element?: string;
