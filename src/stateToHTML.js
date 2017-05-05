@@ -174,6 +174,9 @@ class MarkupGenerator {
   }
 
   generate(): string {
+    if (!this.contentState.hasText()) {
+      return '';
+    }
     this.output = [];
     this.blocks = this.contentState.getBlocksAsArray();
     this.totalBlocks = this.blocks.length;
