@@ -103,6 +103,44 @@ let options = {
 let html = stateToHTML(contentState, options);
 ```
 
+### `entityStyleFn`
+
+It is passed an [`entity`](https://draftjs.org/docs/api-reference-entity.html) object
+and should return an entityStyle object in the shape of:
+
+```js
+{
+  element: 'element', // name of DOM element as a string
+  attributes: {},
+  style: {}
+}
+```
+
+Example:
+
+```js
+let options = {
+  entityStyleFn(entity) => {
+    const entityType = entity.get('type').toLowerCase()
+
+    if (entityType === 'image') {
+      const data = entity.getData()
+
+      return {
+        element: 'img',
+        attributes: {
+          src: data.src
+        },
+        style: {
+          // put styles here...
+        }
+      }
+    }
+  }
+}
+let html = stateToHTML(contentState, options);
+```
+
 ## Contributing
 
 If you want to help out, please open an issue to discuss or join us on [Slack](https://draftjs.herokuapp.com/).
