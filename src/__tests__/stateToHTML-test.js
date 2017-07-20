@@ -138,4 +138,28 @@ describe('stateToHTML', () => {
       '<p><a href="/users/mikaelwaltersson" class="mention"><em>a</em></a></p>'
     );
   });
+
+  it('should support custom parentWrapper tags - default behavior', () => {
+    let contentState1 = convertFromRaw(
+      { "entityMap": {}, "blocks": [{ "key": "dn025", "text": "Hello world.", "type": "ordered-list-item", "depth": 0, "inlineStyleRanges": [{ "offset": 6, "length": 5, "style": "ITALIC" }], "entityRanges": [] }] } // eslint-disable-line
+    );
+    expect(stateToHTML(contentState1)).toBe(
+      '<ol>\n  <li>Hello <em>world</em>.</li>\n</ol>'
+    );
+  });
+
+  it('should support custom parentWrapper tags - overriden options', () => {
+    let options = {
+      parentWrapperTags: {
+        'ordered-list-item': 'div',
+      },
+    };
+
+    let contentState1 = convertFromRaw(
+      { "entityMap": {}, "blocks": [{ "key": "dn025", "text": "Hello world.", "type": "ordered-list-item", "depth": 0, "inlineStyleRanges": [{ "offset": 6, "length": 5, "style": "ITALIC" }], "entityRanges": [] }] } // eslint-disable-line
+    );
+    expect(stateToHTML(contentState1, options)).toBe(
+      '<div>\n  <li>Hello <em>world</em>.</li>\n</div>'
+    );
+  });
 });

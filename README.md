@@ -90,6 +90,16 @@ let options = {
 let html = stateToHTML(contentState, options);
 ```
 
+### `parentWrapperTags`
+Override the Wrapper tags or provide wrappers for Custom blocks
+```
+let options = {
+  parentWrapperTags: {
+    'unordered-list-item': 'ol',
+  }
+}
+```
+
 ## Contributing
 
 If you want to help out, please open an issue to discuss or join us on [Slack](https://draftjs.herokuapp.com/).
