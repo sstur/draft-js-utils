@@ -32,12 +32,14 @@ type StyleMap = {[styleName: string]: RenderConfig};
 
 type BlockStyleFn = (block: ContentBlock) => ?RenderConfig;
 type EntityStyleFn = (entity: Entity) => ?RenderConfig;
+type ParentWrapperTags = {[blockType: string]: string };
 
 type Options = {
   inlineStyles?: StyleMap;
   blockRenderers?: BlockRendererMap;
   blockStyleFn?: BlockStyleFn;
   entityStyleFn?: EntityStyleFn;
+  parentWrapperTags?: ParentWrapperTags;
 };
 
 const {
@@ -134,15 +136,13 @@ function getTags(blockType: string): Array<string> {
   }
 }
 
-function getWrapperTag(blockType: string): ?string {
-  switch (blockType) {
-    case BLOCK_TYPE.UNORDERED_LIST_ITEM:
-      return 'ul';
-    case BLOCK_TYPE.ORDERED_LIST_ITEM:
-      return 'ol';
-    default:
-      return null;
+function getWrapperTag(blockType: string, parentWrapperTags: ParentWrapperTags): ?string {
+
+  if (parentWrapperTags && parentWrapperTags[blockType]) {
+    return parentWrapperTags[blockType];
   }
+
+  return null;
 }
 
 class MarkupGenerator {
@@ -158,6 +158,7 @@ class MarkupGenerator {
   options: Options;
   inlineStyles: StyleMap;
   styleOrder: Array<string>;
+  parentWrapperTags: ParentWrapperTags;
 
   constructor(contentState: ContentState, options: ?Options) {
     if (options == null) {
@@ -171,6 +172,13 @@ class MarkupGenerator {
     );
     this.inlineStyles = inlineStyles;
     this.styleOrder = styleOrder;
+
+    let {parentWrapperTags = {}} = this.options;
+    this.parentWrapperTags = {
+      [BLOCK_TYPE.UNORDERED_LIST_ITEM]: 'ul',
+      [BLOCK_TYPE.ORDERED_LIST_ITEM]: 'ol',
+      ...parentWrapperTags,
+    };
   }
 
   generate(): string {
@@ -191,7 +199,7 @@ class MarkupGenerator {
     let {blockRenderers} = this.options;
     let block = this.blocks[this.currentBlock];
     let blockType = block.getType();
-    let newWrapperTag = getWrapperTag(blockType);
+    let newWrapperTag = getWrapperTag(blockType, this.parentWrapperTags);
     if (this.wrapperTag !== newWrapperTag) {
       if (this.wrapperTag) {
         this.closeWrapperTag();
