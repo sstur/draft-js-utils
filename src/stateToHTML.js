@@ -37,6 +37,7 @@ type Options = {
   blockRenderers?: BlockRendererMap;
   blockStyleFn?: BlockStyleFn;
   entityStyleFn?: EntityStyleFn;
+  defaultBlockTag?: string;
 };
 
 const {
@@ -105,7 +106,7 @@ const DATA_TO_ATTR = {
 
 // The reason this returns an array is because a single block might get wrapped
 // in two tags.
-function getTags(blockType: string): Array<string> {
+function getTags(blockType: string, defaultBlockTag): Array<string> {
   switch (blockType) {
     case BLOCK_TYPE.HEADER_ONE:
       return ['h1'];
@@ -129,7 +130,7 @@ function getTags(blockType: string): Array<string> {
     case BLOCK_TYPE.ATOMIC:
       return ['figure'];
     default:
-      return ['p'];
+      return [defaultBlockTag || 'p'];
   }
 }
 
@@ -187,7 +188,10 @@ class MarkupGenerator {
   }
 
   processBlock() {
-    let {blockRenderers} = this.options;
+    let {
+      blockRenderers,
+      defaultBlockTag,
+    } = this.options;
     let block = this.blocks[this.currentBlock];
     let blockType = block.getType();
     let newWrapperTag = getWrapperTag(blockType);
@@ -212,7 +216,7 @@ class MarkupGenerator {
       this.currentBlock += 1;
       return;
     }
-    this.writeStartTag(block);
+    this.writeStartTag(block, defaultBlockTag);
     this.output.push(this.renderBlockContent(block));
     // Look ahead and see if we will nest list.
     let nextBlock = this.getNextBlock();
@@ -235,7 +239,7 @@ class MarkupGenerator {
     } else {
       this.currentBlock += 1;
     }
-    this.writeEndTag(block);
+    this.writeEndTag(block, defaultBlockTag);
   }
 
   processBlocksAtDepth(depth: number) {
@@ -251,8 +255,8 @@ class MarkupGenerator {
     return this.blocks[this.currentBlock + 1];
   }
 
-  writeStartTag(block) {
-    let tags = getTags(block.getType());
+  writeStartTag(block, defaultBlockTag) {
+    let tags = getTags(block.getType(), defaultBlockTag);
 
     let attrString;
     if (this.options.blockStyleFn) {
@@ -273,8 +277,8 @@ class MarkupGenerator {
     }
   }
 
-  writeEndTag(block) {
-    let tags = getTags(block.getType());
+  writeEndTag(block, defaultBlockTag) {
+    let tags = getTags(block.getType(), defaultBlockTag);
     if (tags.length === 1) {
       this.output.push(`</${tags[0]}>\n`);
     } else {
