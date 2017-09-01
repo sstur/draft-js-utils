@@ -90,6 +90,19 @@ let options = {
 let html = stateToHTML(contentState, options);
 ```
 
+### `defaultBlockTag`
+
+If you don't want to define the full custom render for a block, you can define the type of the parent block tag that will be created if the block type doesn't match any known type.
+
+Example:
+
+```javascript
+let options = {
+  defaultBlockTag: 'div',
+};
+let html = stateToHTML(contentState, options);
+```
+
 ## Contributing
 
 If you want to help out, please open an issue to discuss or join us on [Slack](https://draftjs.herokuapp.com/).
