@@ -120,24 +120,22 @@ Example:
 
 ```js
 let options = {
-  entityStyleFn(entity) => {
-    const entityType = entity.get('type').toLowerCase()
-
+  entityStyleFn: (entity) => {
+    const entityType = entity.get('type').toLowerCase();
     if (entityType === 'image') {
-      const data = entity.getData()
-
+      const data = entity.getData();
       return {
         element: 'img',
         attributes: {
-          src: data.src
+          src: data.src,
         },
         style: {
-          // put styles here...
-        }
-      }
+          // Put styles here...
+        },
+      };
     }
-  }
-}
+  },
+};
 let html = stateToHTML(contentState, options);
 ```
 
