@@ -4,13 +4,14 @@ import {stateFromElement} from 'draft-js-import-element';
 import parseHTML from './parseHTML';
 
 import type {ContentState} from 'draft-js';
-import type {ElementStyles, CustomBlockFn} from 'draft-js-import-element';
+import type {ElementStyles, CustomBlockFn, CustomInlineFn} from 'draft-js-import-element';
 
 type Options = {
   parser?: (html: string) => Element;
   elementStyles?: ElementStyles;
   blockTypes?: {[key: string]: string};
   customBlockFn?: CustomBlockFn;
+  customInlineFn?: CustomInlineFn;
 };
 
 export default function stateFromHTML(

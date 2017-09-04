@@ -53,10 +53,15 @@ export type CustomBlockFn = (
   element: DOMElement,
 ) => ?{type?: string; data?: BlockData};
 
+export type CustomInlineFn = (
+  element: DOMElement,
+) => ?string;
+
 type Options = {
   elementStyles?: ElementStyles;
   blockTypes?: {[key: string]: string};
   customBlockFn?: CustomBlockFn;
+  customInlineFn?: CustomInlineFn;
 };
 
 const NO_STYLE = OrderedSet();
@@ -299,6 +304,13 @@ class ContentGenerator {
     let style = block.styleStack.slice(-1)[0];
     let entityKey = block.entityStack.slice(-1)[0];
     style = addStyleFromTagName(style, tagName, this.options.elementStyles);
+    let {customInlineFn} = this.options;
+    if (customInlineFn) {
+      let customInline = customInlineFn(element);
+      if (customInline != null) {
+        style = style.add(customInline);
+      }
+    }
     if (ElementToEntity.hasOwnProperty(tagName)) {
       // If the to-entity function returns nothing, use the existing entity.
       entityKey = ElementToEntity[tagName](this, tagName, element) || entityKey;
