@@ -49,13 +49,18 @@ type ParsedBlock = {
 
 export type ElementStyles = {[tagName: string]: Style};
 
+type PartialBlock = {
+  type?: string;
+  data?: BlockData;
+};
+
 export type CustomBlockFn = (
   element: DOMElement,
-) => ?{type?: string; data?: BlockData};
+) => ?PartialBlock;
 
 export type CustomInlineFn = (
   element: DOMElement,
-) => ?string;
+) => ?(Style | PartialBlock);
 
 type Options = {
   elementStyles?: ElementStyles;
@@ -303,13 +308,16 @@ class ContentGenerator {
     let block = this.blockStack.slice(-1)[0];
     let style = block.styleStack.slice(-1)[0];
     let entityKey = block.entityStack.slice(-1)[0];
-    style = addStyleFromTagName(style, tagName, this.options.elementStyles);
     let {customInlineFn} = this.options;
-    if (customInlineFn) {
-      let customInline = customInlineFn(element);
-      if (customInline != null) {
-        style = style.add(customInline);
-      }
+    let customInline = customInlineFn ? customInlineFn(element) : null;
+    if (typeof customInline === 'string') {
+      style = style.add(customInline);
+    } else if (customInline != null) {
+      // TODO: do something with the block data
+      // type = customInline.type;
+      // data = customInline.data;
+    } else {
+      style = addStyleFromTagName(style, tagName, this.options.elementStyles);
     }
     if (ElementToEntity.hasOwnProperty(tagName)) {
       // If the to-entity function returns nothing, use the existing entity.
