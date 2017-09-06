@@ -47,7 +47,7 @@ describe('stateFromElement', () => {
     });
   });
 
-  it('supports option customBlockFn (type)', () => {
+  it('should support option customBlockFn (type)', () => {
     let textNode = new TextNode('Hello World');
     let element = new ElementNode('center', [], [textNode]);
     let options = {
@@ -75,7 +75,7 @@ describe('stateFromElement', () => {
     });
   });
 
-  it('supports option customBlockFn (data)', () => {
+  it('should support option customBlockFn (data)', () => {
     let textNode = new TextNode('Hello World');
     let element = new ElementNode(
       'p',
@@ -110,7 +110,43 @@ describe('stateFromElement', () => {
     });
   });
 
-  it('supports option elementStyles', () => {
+  it('should support option customInlineFn', () => {
+    let element = new ElementNode('div', [], [
+      new ElementNode('span', [{name: 'class', value: 'bold'}], [
+        new TextNode('Hello'),
+      ]),
+      new ElementNode('span', [{name: 'class', value: 'link'}], [
+        new TextNode('World'),
+      ]),
+    ]);
+    let options = {
+      customInlineFn(tagName, el, {Style, Entity}) {
+        if (tagName === 'span' && el.getAttribute('class') === 'bold') {
+          return Style('BOLD');
+        }
+        if (tagName === 'span' && el.getAttribute('class') === 'link') {
+          return Entity('LINK', {url: '/abc'});
+        }
+      },
+    };
+    let contentState = stateFromElement(element, options);
+    let rawContentState = removeBlockKeys(convertToRaw(contentState));
+    expect(rawContentState).toEqual({
+      entityMap: {[0]: {type: 'LINK', mutability: 'MUTABLE', data: {url: '/abc'}}},
+      blocks: [
+        {
+          text: 'HelloWorld',
+          type: 'unstyled',
+          depth: 0,
+          inlineStyleRanges: [{offset: 0, length: 5, style: 'BOLD'}],
+          entityRanges: [{offset: 5, length: 5, key: 0}],
+          data: {},
+        },
+      ],
+    });
+  });
+
+  it('should support option elementStyles', () => {
     let textNode = new TextNode('Superscript');
     let element = new ElementNode('sup', [], [textNode]);
     let wrapperElement = new ElementNode('div', [], [element]);
