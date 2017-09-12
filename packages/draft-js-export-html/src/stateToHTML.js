@@ -42,7 +42,7 @@ type Options = {
   blockRenderers?: BlockRendererMap;
   blockStyleFn?: BlockStyleFn;
   entityStyleFn?: EntityStyleFn;
-  defaultBlockTag?: string;
+  defaultBlockTag?: ?string;
 };
 
 const {BOLD, CODE, ITALIC, STRIKETHROUGH, UNDERLINE} = INLINE_STYLE;
@@ -146,6 +146,9 @@ function getTags(blockType: string, defaultBlockTag): Array<string> {
     case BLOCK_TYPE.ATOMIC:
       return ['figure'];
     default:
+      if (defaultBlockTag === null) {
+        return [];
+      }
       return [defaultBlockTag || 'p'];
   }
 }

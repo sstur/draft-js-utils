@@ -67,6 +67,8 @@ let html = stateToHTML(contentState, options);
 
 If you don't want to define the full custom render for a block, you can define the type of the parent block tag that will be created if the block type doesn't match any known type.
 
+If you don't want any parent block tag, you can set `defaultBlockTag` to `null`.
+
 Example:
 
 ```javascript

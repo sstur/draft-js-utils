@@ -213,4 +213,32 @@ describe('stateToHTML', () => {
       '<p><a href="/users/mikaelwaltersson" class="mention"><em>a</em></a></p>',
     );
   });
+
+  it('should support custom block tag', () => {
+    let contentState = convertFromRaw(
+      {
+        entityMap: {},
+        blocks: [{
+          key: '33nh8',
+          text: 'a',
+          type: 'unstyled',
+          depth: 0,
+          inlineStyleRange: [],
+          entityRanges: [],
+        }],
+      },
+    );
+
+    expect(stateToHTML(contentState)).toBe(
+      '<p>a</p>',
+    );
+
+    expect(stateToHTML(contentState, {defaultBlockTag: 'h1'})).toBe(
+      '<h1>a</h1>',
+    );
+
+    expect(stateToHTML(contentState, {defaultBlockTag: null})).toBe(
+      'a',
+    );
+  });
 });
