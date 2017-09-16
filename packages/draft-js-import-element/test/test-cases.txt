@@ -102,3 +102,10 @@
 <blockquote>
   <p>Hello</p>
 </blockquote>
+
+# Code block
+{"entityMap":{},"blocks":[]}
+<pre>
+  <code>const a = 'b';
+  const c = 'd';</code
+</pre>
