@@ -104,7 +104,7 @@
 </blockquote>
 
 # Code block
-{"entityMap":{},"blocks":[]}
+{"entityMap":{},"blocks":[{"data":{},"depth":0,"entityRanges":[],"inlineStyleRanges":[{"length":31,"offset":2,"style":"CODE"}],"text":"  const a = 'b';\nconst c = 'd';","type":"code-block"}]}
 <pre>
   <code>const a = 'b';
   const c = 'd';</code
