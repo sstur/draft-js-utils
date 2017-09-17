@@ -4,7 +4,8 @@
   "description": "DraftJS: Import Element to ContentState",
   "main": "lib/main.js",
   "scripts": {
-    "build": "babel src --out-dir lib --ignore \"_*\""
+    "build": "babel src --out-dir lib --ignore \"_*\"",
+    "watch": "babel src --watch --out-dir lib --ignore \"_*\""
   },
   "dependencies": {
     "draft-js-utils": "^1.1.0",

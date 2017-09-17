@@ -4,7 +4,8 @@
   "description": "Synthetic HTML DOM for use with parsing within React-RTE",
   "main": "lib/main.js",
   "scripts": {
-    "build": "babel src --out-dir lib --ignore \"_*\""
+    "build": "babel src --out-dir lib --ignore \"_*\"",
+    "watch": "babel src --watch --out-dir lib --ignore \"_*\""
   },
   "keywords": [
     "synthetic-dom",

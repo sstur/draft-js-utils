@@ -2,6 +2,7 @@
   "name": "draft-js-utils",
   "scripts": {
     "build": "lerna run build",
+    "watch": "lerna run --parallel watch",
     "format": "prettier-eslint --write \"packages/*/src/**/*.js\"",
     "lint": "eslint --max-warnings 0 .",
     "typecheck": "flow",
