@@ -21,6 +21,21 @@ describe('stateFromMarkdown', () => {
       },
     ]);
   });
+  it('should correctly move code blocks', () => {
+    let codeMarkdown = '```\nconst a = \'b\'\n```';
+    let contentState = stateFromMarkdown(codeMarkdown);
+    let rawContentState = convertToRaw(contentState);
+    let blocks = removeKeys(rawContentState.blocks);
+    expect(blocks).toEqual([
+      {
+        text: 'const a = \'b\';',
+        type: 'code-block',
+        depth: 0,
+        inlineStyleRanges: [],
+        entityRanges: [],
+      },
+    ]);
+  });
 });
 
 function removeKeys(blocks) {
