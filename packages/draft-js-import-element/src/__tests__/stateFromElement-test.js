@@ -173,7 +173,7 @@ describe('stateFromElement', () => {
   });
 
   it('should support images', () => {
-    let imageNode = new ElementNode('img', [{ name: 'src', value: 'imgur.com/asdf.jpg' }]);
+    let imageNode = new ElementNode('img', [{name: 'src', value: 'imgur.com/asdf.jpg'}]);
     let wrapperElement = new ElementNode('div', [], [imageNode]);
     let contentState = stateFromElement(wrapperElement);
     let rawContentState = removeBlockKeys(convertToRaw(contentState));
@@ -191,7 +191,7 @@ describe('stateFromElement', () => {
         type: 'unstyled',
       }],
       entityMap: {
-        '0': {
+        0: {
           data: {
             src: 'imgur.com/asdf.jpg',
           },
