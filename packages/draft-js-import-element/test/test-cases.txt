@@ -54,6 +54,10 @@
 {"entityMap":{"0":{"type":"IMAGE","mutability":"MUTABLE","data":{"src":"a.jpg", "alt": "a"}}},"blocks":[{"key":"8r91a","text":"\u00A0","type":"unstyled","data":{},"depth":0,"inlineStyleRanges":[],"entityRanges":[{"offset":0,"length":1,"key":0}]}]}
 <p><img src="a.jpg" alt="a"/></p>
 
+# Image Entity with complex src
+{"entityMap":{"0":{"type":"IMAGE","mutability":"MUTABLE","data":{"src":"https://spectrum.imgix.net/threads/c678032e-68a4-4e14-956d-abfa444a707d/Captura%20de%20pantalla%202017-08-19%20a%20la(s)%2000.14.09.png.0.29802431313299893", "alt": "a"}}},"blocks":[{"key":"8r91a","text":"\u00A0","type":"unstyled","data":{},"depth":0,"inlineStyleRanges":[],"entityRanges":[{"offset":0,"length":1,"key":0}]}]}
+<p><img src="https://spectrum.imgix.net/threads/c678032e-68a4-4e14-956d-abfa444a707d/Captura%20de%20pantalla%202017-08-19%20a%20la(s)%2000.14.09.png.0.29802431313299893" alt="a"/></p>
+
 # Entity
 {"entityMap":{"0":{"type":"LINK","mutability":"MUTABLE","data":{"url":"/"}}},"blocks":[{"key":"8r91j","text":"a","type":"unstyled","data":{},"depth":0,"inlineStyleRanges":[],"entityRanges":[{"offset":0,"length":1,"key":0}]}]}
 <p><a href="/">a</a></p>

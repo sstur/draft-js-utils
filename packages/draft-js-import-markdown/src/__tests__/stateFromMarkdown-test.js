@@ -43,6 +43,39 @@ describe('stateFromMarkdown', () => {
       },
     ]);
   });
+  it('should correctly move images with complex srcs', () => {
+    const src = 'https://spectrum.imgix.net/threads/c678032e-68a4-4e14-956d-abfa444a707d/Captura%20de%20pantalla%202017-08-19%20a%20la(s)%2000.14.09.png.0.29802431313299893'
+    let input = `![](${src})`;
+    let contentState = stateFromMarkdown(input);
+    let rawContentState = convertToRaw(contentState);
+    let blocks = removeKeys(rawContentState.blocks);
+    expect({
+      ...rawContentState,
+      blocks
+    }).toEqual({
+      entityMap: {
+        '0': {
+          type: 'IMAGE',
+          mutability: 'MUTABLE',
+          data: {
+            src: src,
+          }
+        }
+      },
+      blocks: [{
+        text: ' ',
+        type: 'unstyled',
+        depth: 0,
+        inlineStyleRanges: [],
+        entityRanges: [{
+          offset: 0,
+          length: 1,
+          key: 0
+        }],
+        data: {}
+      }]
+    });
+  })
 });
 
 function removeKeys(blocks) {
