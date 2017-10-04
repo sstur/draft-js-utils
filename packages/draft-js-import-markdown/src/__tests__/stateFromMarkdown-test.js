@@ -54,7 +54,9 @@ describe('stateFromMarkdown', () => {
       blocks,
     }).toEqual({
       entityMap: {
-        0: {
+        // This is necessary due to flow not supporting non-string literal property keys
+        // eslint-disable-next-line quote-props
+        '0': {
           type: 'IMAGE',
           mutability: 'MUTABLE',
           data: {
