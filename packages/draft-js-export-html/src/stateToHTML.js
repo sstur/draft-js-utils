@@ -176,6 +176,7 @@ class MarkupGenerator {
   // These are related to user-defined options.
   options: Options;
   inlineStyles: StyleMap;
+  inlineStyleFn: ?Function;
   styleOrder: Array<string>;
 
   constructor(contentState: ContentState, options: ?Options) {
@@ -192,6 +193,7 @@ class MarkupGenerator {
       DEFAULT_STYLE_ORDER,
     ]);
     this.inlineStyles = inlineStyles;
+    this.inlineStyleFn = options.inlineStyleFn;
     this.styleOrder = styleOrder;
   }
 
@@ -334,6 +336,23 @@ class MarkupGenerator {
     this.output.push(INDENT.repeat(this.indentLevel));
   }
 
+  withCustomInlineStyles = (content, styleSet) => {
+    if (!this.inlineStyleFn) {
+      return content;
+    }
+
+    const customStyles = this.inlineStyleFn(styleSet);
+    if (!customStyles || Object.keys(customStyles).length === 0) {
+      return content;
+    }
+
+    const attrString = stringifyAttrs({
+      style: styleToCSS(customStyles),
+    });
+
+    return `<span${attrString}>${content}</span>`;
+  };
+
   renderBlockContent(block: ContentBlock): string {
     let blockType = block.getType();
     let text = block.getText();
@@ -372,7 +391,8 @@ class MarkupGenerator {
                 content = `<${element}${attrString}>${content}</${element}>`;
               }
             }
-            return content;
+
+            return this.withCustomInlineStyles(content, styleSet);
           })
           .join('');
         let entity = entityKey ? this.contentState.getEntity(entityKey) : null;

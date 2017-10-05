@@ -110,6 +110,41 @@ describe('stateToHTML', () => {
     );
   });
 
+  it('should support inline style function', () => {
+    let options = {
+      inlineStyleFn: (styles) => {
+        let key = 'color-';
+        let color = styles.filter((value) => value.startsWith(key)).first();
+
+        if (color) {
+          return {
+            color: color.replace(key, ''),
+          };
+        }
+      },
+    };
+
+    let contentState = convertFromRaw(
+      //<p>Hello <span style="color: #f8b400">world</span></p>
+      {
+        entityMap: {},
+        blocks: [{
+          key: '7h6g0',
+          text: 'Hello world',
+          type: 'unstyled',
+          depth: 0,
+          inlineStyleRanges: [{offset: 6, length: 5, style: 'color-#f8b400'}],
+          entityRanges: [],
+          data: {},
+        }],
+      },
+    );
+
+    expect(stateToHTML(contentState, options)).toBe(
+      '<p>Hello <span style="color: #f8b400">world</span></p>',
+    );
+  });
+
   it('should support custom block styles', () => {
     let options = {
       blockStyleFn: (block) => {
