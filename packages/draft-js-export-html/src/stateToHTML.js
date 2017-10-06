@@ -18,6 +18,7 @@ import type {
   EntityInstance,
 } from 'draft-js';
 import type {CharacterMetaList} from 'draft-js-utils';
+import type {DraftInlineStyle} from 'draft-js/lib/DraftInlineStyle';
 
 type AttrMap = {[key: string]: string};
 type Attributes = {[key: string]: string};
@@ -36,9 +37,11 @@ type StyleMap = {[styleName: string]: RenderConfig};
 
 type BlockStyleFn = (block: ContentBlock) => ?RenderConfig;
 type EntityStyleFn = (entity: Entity) => ?RenderConfig;
+type InlineStyleFn = (style: DraftInlineStyle) => ?Object;
 
 type Options = {
   inlineStyles?: StyleMap;
+  inlineStyleFn?: InlineStyleFn;
   blockRenderers?: BlockRendererMap;
   blockStyleFn?: BlockStyleFn;
   entityStyleFn?: EntityStyleFn;
