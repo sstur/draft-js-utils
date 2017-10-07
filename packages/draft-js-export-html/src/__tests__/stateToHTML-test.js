@@ -241,4 +241,32 @@ describe('stateToHTML', () => {
       'a',
     );
   });
+
+  it('should support custom break element', () => {
+    let contentState = convertFromRaw(
+      {
+        entityMap: {},
+        blocks: [{
+          key: '33nh8',
+          text: '',
+          type: 'unstyled',
+          depth: 0,
+          inlineStyleRange: [],
+          entityRanges: [],
+        }],
+      },
+    );
+
+    expect(stateToHTML(contentState)).toBe(
+      '<p><br></p>',
+    );
+
+    expect(stateToHTML(contentState, {breakElement: ''})).toBe(
+      '<p></p>',
+    );
+
+    expect(stateToHTML(contentState, {breakElement: '<hr />'})).toBe(
+      '<p><hr /></p>',
+    );
+  });
 });

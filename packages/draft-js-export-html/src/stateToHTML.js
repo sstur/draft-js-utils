@@ -43,12 +43,13 @@ type Options = {
   blockStyleFn?: BlockStyleFn;
   entityStyleFn?: EntityStyleFn;
   defaultBlockTag?: ?string;
+  breakElement?: string;
 };
 
 const {BOLD, CODE, ITALIC, STRIKETHROUGH, UNDERLINE} = INLINE_STYLE;
 
 const INDENT = '  ';
-const BREAK = '<br>';
+const DEFAULT_BREAK = '<br>';
 const DATA_ATTRIBUTE = /^data-([a-z0-9-]+)$/;
 
 const DEFAULT_STYLE_MAP = {
@@ -337,9 +338,14 @@ class MarkupGenerator {
   renderBlockContent(block: ContentBlock): string {
     let blockType = block.getType();
     let text = block.getText();
+    const breakElement = (
+      this.options.breakElement !== undefined
+      ? this.options.breakElement
+      : DEFAULT_BREAK
+    );
     if (text === '') {
       // Prevent element collapse if completely empty.
-      return BREAK;
+      return breakElement;
     }
     text = this.preserveWhitespace(text);
     let charMetaList: CharacterMetaList = block.getCharacterList();
@@ -348,7 +354,7 @@ class MarkupGenerator {
       .map(([entityKey, stylePieces]) => {
         let content = stylePieces
           .map(([text, styleSet]) => {
-            let content = encodeContent(text);
+            let content = encodeContent(text, breakElement);
             for (let styleName of this.styleOrder) {
               // If our block type is CODE then don't wrap inline code elements.
               if (styleName === CODE && blockType === BLOCK_TYPE.CODE) {
@@ -460,7 +466,7 @@ function canHaveDepth(blockType: string): boolean {
   }
 }
 
-function encodeContent(text: string): string {
+function encodeContent(text: string, breakElement: string): string {
   return text
     .split('&')
     .join('&amp;')
@@ -471,7 +477,7 @@ function encodeContent(text: string): string {
     .split('\xA0')
     .join('&nbsp;')
     .split('\n')
-    .join(BREAK + '\n');
+    .join(breakElement + '\n');
 }
 
 function encodeAttr(text: string): string {

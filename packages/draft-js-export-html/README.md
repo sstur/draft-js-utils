@@ -141,6 +141,23 @@ let options = {
 let html = stateToHTML(contentState, options);
 ```
 
+### `breakElement`
+
+The default break element is `<br>`, but you can set custom element.
+
+Example:
+
+```js
+const contentState = convertFromRaw(
+  { entityMap: {}, blocks: [{ text: '', ... }] },
+);
+
+stateToHTML(contentState);  // '<p><br></p>
+
+let options = { breakElement: '<hr />'} ;
+stateToHTML(contentState, options);  // <p><hr /></p>
+```
+
 ## Contributing
 
 If you want to help out, please open an issue to discuss or join us on [Slack](https://draftjs.herokuapp.com/).
