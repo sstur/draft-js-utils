@@ -222,7 +222,7 @@ class MarkupGenerator {
         } else if (entity != null && entity.getType() === ENTITY_TYPE.IMAGE) {
           let data = entity.getData();
           let src = data.src || '';
-          let alt = data.alt ? ` "${escapeTitle(data.alt)}"` : '';
+          let alt = data.alt ? `${escapeTitle(data.alt)}` : '';
           return `![${alt}](${encodeURL(src)})`;
         } else {
           return content;
