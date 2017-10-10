@@ -16,7 +16,7 @@ _Bold_**Italic**
 
 >> Image with alt
 {"entityMap":{"0":{"type":"IMAGE","mutability":"MUTABLE","data":{"src":"/a.jpg","alt":"x"}}},"blocks":[{"key":"f131g","text":"Hello World.","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[{"offset":5,"length":1,"key":0}]}]}
-Hello![ "x"](/a.jpg)World.
+Hello![x](/a.jpg)World.
 
 >> Image with empty alt
 {"entityMap":{"0":{"type":"IMAGE","mutability":"MUTABLE","data":{"src":"/a.jpg","alt":""}}},"blocks":[{"key":"f131g","text":"Hello World.","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[{"offset":5,"length":1,"key":0}]}]}
