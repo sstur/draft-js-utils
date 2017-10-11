@@ -44,7 +44,7 @@ let html = stateToHTML(contentState, options);
 ```
 ### `inlineStylesFn`
 
-You can define custom function to return css object based on inline styles. Similar to draft.js [customStyleFn](https://draftjs.org/docs/api-reference-editor.html#customstylefn).
+You can define custom function to return rendering options based on inline styles. Similar to draft.js [customStyleFn](https://draftjs.org/docs/api-reference-editor.html#customstylefn).
 
 Example:
 
@@ -56,7 +56,10 @@ let options = {
 
     if (color) {
       return {
-        color: color.replace(key, ''),
+        element: 'span',
+        style: {
+          color: color.replace(key, ''),
+        },
       };
     }
   },
