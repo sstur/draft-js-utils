@@ -118,7 +118,10 @@ describe('stateToHTML', () => {
 
         if (color) {
           return {
-            color: color.replace(key, ''),
+            element: 'span',
+            style: {
+              color: color.replace(key, ''),
+            },
           };
         }
       },

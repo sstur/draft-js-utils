@@ -37,7 +37,7 @@ type StyleMap = {[styleName: string]: RenderConfig};
 
 type BlockStyleFn = (block: ContentBlock) => ?RenderConfig;
 type EntityStyleFn = (entity: Entity) => ?RenderConfig;
-type InlineStyleFn = (style: DraftInlineStyle) => ?Object;
+type InlineStyleFn = (style: DraftInlineStyle) => ?RenderConfig;
 
 type Options = {
   inlineStyles?: StyleMap;
@@ -179,7 +179,7 @@ class MarkupGenerator {
   // These are related to user-defined options.
   options: Options;
   inlineStyles: StyleMap;
-  inlineStyleFn: ?Function;
+  inlineStyleFn: ?InlineStyleFn;
   styleOrder: Array<string>;
 
   constructor(contentState: ContentState, options: ?Options) {
@@ -339,22 +339,24 @@ class MarkupGenerator {
     this.output.push(INDENT.repeat(this.indentLevel));
   }
 
-  withCustomInlineStyles = (content, styleSet) => {
+  withCustomInlineStyles(content, styleSet) {
     if (!this.inlineStyleFn) {
       return content;
     }
 
-    const customStyles = this.inlineStyleFn(styleSet);
-    if (!customStyles || Object.keys(customStyles).length === 0) {
+    const renderConfig = this.inlineStyleFn(styleSet);
+    if (!renderConfig) {
       return content;
     }
 
+    const {element = 'span', attributes, style} = renderConfig;
     const attrString = stringifyAttrs({
-      style: styleToCSS(customStyles),
+      ...attributes,
+      style: style && styleToCSS(style),
     });
 
-    return `<span${attrString}>${content}</span>`;
-  };
+    return `<${element}${attrString}>${content}</${element}>`;
+  }
 
   renderBlockContent(block: ContentBlock): string {
     let blockType = block.getType();
