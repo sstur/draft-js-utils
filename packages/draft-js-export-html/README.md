@@ -141,9 +141,9 @@ let options = {
 let html = stateToHTML(contentState, options);
 ```
 
-### `breakElement`
+### `linebreak`
 
-The default break element is `<br>`, but you can set custom element.
+The default linebreak of an empty block element is `<br>`, but you can set custom.
 
 Example:
 
@@ -154,8 +154,8 @@ const contentState = convertFromRaw(
 
 stateToHTML(contentState);  // '<p><br></p>
 
-let options = { breakElement: '<hr />'} ;
-stateToHTML(contentState, options);  // <p><hr /></p>
+let options = { linebreak: '<hr>' };
+stateToHTML(contentState, options);  // <p><hr></p>
 ```
 
 ## Contributing

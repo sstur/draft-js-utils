@@ -261,12 +261,12 @@ describe('stateToHTML', () => {
       '<p><br></p>',
     );
 
-    expect(stateToHTML(contentState, {breakElement: ''})).toBe(
+    expect(stateToHTML(contentState, {linebreak: ''})).toBe(
       '<p></p>',
     );
 
-    expect(stateToHTML(contentState, {breakElement: '<hr />'})).toBe(
-      '<p><hr /></p>',
+    expect(stateToHTML(contentState, {linebreak: '<hr>'})).toBe(
+      '<p><hr></p>',
     );
   });
 });
