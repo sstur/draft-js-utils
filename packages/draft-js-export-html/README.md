@@ -165,6 +165,23 @@ let options = {
 let html = stateToHTML(contentState, options);
 ```
 
+### `linebreak`
+
+The default linebreak of an empty block element is `<br>`, but you can set custom.
+
+Example:
+
+```js
+const contentState = convertFromRaw(
+  { entityMap: {}, blocks: [{ text: '', ... }] },
+);
+
+stateToHTML(contentState);  // '<p><br></p>
+
+let options = { linebreak: '<hr>' };
+stateToHTML(contentState, options);  // <p><hr></p>
+```
+
 ## Contributing
 
 If you want to help out, please open an issue to discuss or join us on [Slack](https://draftjs.herokuapp.com/).
