@@ -208,7 +208,7 @@ describe('stateToHTML', () => {
 
   it('blockStyleFn should support setting custom element', () => {
     let options = {
-      blockStyleFn: (block) => ({
+      blockStyleFn: () => ({
         element: 'li',
       }),
     };
@@ -237,7 +237,7 @@ describe('stateToHTML', () => {
     expect(stateToHTML(contentState1, options)).toBe(
       '<li>Hello <em>world</em>.</li>',
     );
-  })
+  });
 
   it('should support custom entity styles', () => {
     let options = {
