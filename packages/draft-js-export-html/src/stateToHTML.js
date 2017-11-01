@@ -18,7 +18,6 @@ import type {
   EntityInstance,
 } from 'draft-js';
 import type {CharacterMetaList} from 'draft-js-utils';
-import type {DraftInlineStyle} from 'draft-js/lib/DraftInlineStyle';
 
 type AttrMap = {[key: string]: string};
 type Attributes = {[key: string]: string};
