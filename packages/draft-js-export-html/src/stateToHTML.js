@@ -343,8 +343,10 @@ class MarkupGenerator {
       return content;
     }
 
+    const inlineStyleFn = this.inlineStyleFn;
+
     return styleSet.reduce((nextContent, styleItem) => {
-      const renderConfig = this.inlineStyleFn(styleItem);
+      const renderConfig = inlineStyleFn(styleItem);
 
       if (!renderConfig) {
         return nextContent;
