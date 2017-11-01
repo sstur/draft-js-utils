@@ -37,7 +37,7 @@ type StyleMap = {[styleName: string]: RenderConfig};
 
 type BlockStyleFn = (block: ContentBlock) => ?RenderConfig;
 type EntityStyleFn = (entity: Entity) => ?RenderConfig;
-type InlineStyleFn = (style: DraftInlineStyle) => ?RenderConfig;
+type InlineStyleFn = (style: string) => ?RenderConfig;
 
 type Options = {
   inlineStyles?: StyleMap;
@@ -344,18 +344,21 @@ class MarkupGenerator {
       return content;
     }
 
-    const renderConfig = this.inlineStyleFn(styleSet);
-    if (!renderConfig) {
-      return content;
-    }
+    return styleSet.reduce((nextContent, styleItem) => {
+      const renderConfig = this.inlineStyleFn(styleItem);
 
-    const {element = 'span', attributes, style} = renderConfig;
-    const attrString = stringifyAttrs({
-      ...attributes,
-      style: style && styleToCSS(style),
-    });
+      if (!renderConfig) {
+        return nextContent;
+      }
 
-    return `<${element}${attrString}>${content}</${element}>`;
+      const {element = 'span', attributes, style} = renderConfig;
+      const attrString = stringifyAttrs({
+        ...attributes,
+        style: style && styleToCSS(style),
+      });
+
+      return `<${element}${attrString}>${nextContent}</${element}>`;
+    }, content);
   }
 
   renderBlockContent(block: ContentBlock): string {
