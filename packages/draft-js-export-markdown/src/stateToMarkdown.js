@@ -120,7 +120,9 @@ class MarkupGenerator {
       }
       case BLOCK_TYPE.CODE: {
         this.insertLineBreaks(1);
-        this.output.push(CODE_INDENT + this.renderBlockContent(block) + '\n');
+        const blockData = block.getData();
+        const language = blockData.get('language') || '';
+        this.output.push('```' + language + '\n' + this.renderBlockContent(block) + '\n```');
         break;
       }
       default: {
