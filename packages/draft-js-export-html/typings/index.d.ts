@@ -3,8 +3,8 @@
 declare module 'draft-js-export-html' {
     import draftjs = require("draft-js");
 
-    type BlockStyleFn = (block: draftjs.ContentBlock) => RenderConfig;
-    type EntityStyleFn = (entity: draftjs.EntityInstance) => RenderConfig;
+    type BlockStyleFn = (block: draftjs.ContentBlock) => RenderConfig|undefined;
+    type EntityStyleFn = (entity: draftjs.EntityInstance) => RenderConfig|undefined;
     type BlockRenderer = (block: draftjs.ContentBlock) => string;
     type RenderConfig = {
         element?: string;
@@ -13,6 +13,7 @@ declare module 'draft-js-export-html' {
     };
 
     export interface Options {
+        defaultBlockTag?: string;
         inlineStyles?: { [styleName: string]: RenderConfig };
         blockRenderers?: { [blockType: string]: BlockRenderer };
         blockStyleFn?: BlockStyleFn;
