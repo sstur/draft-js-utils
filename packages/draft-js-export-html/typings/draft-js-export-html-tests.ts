@@ -26,3 +26,16 @@ res = stateToHTML(state, {
         },
     },
 });
+res = stateToHTML(state, {
+    defaultBlockTag: 'div',
+});
+res = stateToHTML(state, {
+    entityStyleFn: (entity) => {
+        if (entity.getType() === 'FOO') {
+            return {
+                element: 'div',
+                style: { color: 'red' }
+            };
+        }
+    }
+})
