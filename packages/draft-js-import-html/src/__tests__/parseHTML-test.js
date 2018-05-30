@@ -44,24 +44,24 @@ describe('parseHTML', () => {
   });
 
   describe('Large HTML structure with multiple paragraphs', () => {
-    it('should be parsed in a reasonable amount of time', () => {
+    it('should be parsed', () => {
       let file = path.resolve(__dirname, 'fixtures/large-multiple-paragraphs.html');
       let html = fs.readFileSync(file);
       let element = parseHTML(html.toString());
 
-      it('should return a element of some kind', () => {
+      it('should return an element of some kind', () => {
         expect(element.nodeType).toBe(1);
       });
     });
   });
 
-  describe('Large HTML structure with single paragraphs', () => {
-    it('should be parsed in a reasonable amount of time', () => {
+  describe('Large HTML structure with single paragraph', () => {
+    it('should be parsed', () => {
       let file = path.resolve(__dirname, 'fixtures/large-single-paragraph.html');
       let html = fs.readFileSync(file);
       let element = parseHTML(html.toString());
 
-      it('should return a element of some kind', () => {
+      it('should return an element of some kind', () => {
         expect(element.nodeType).toBe(1);
       });
     });
