@@ -2,16 +2,18 @@
 const {describe, it} = global;
 import expect from 'expect';
 import * as fs from 'fs';
+import * as path from 'path';
 import stateFromHTML from '../stateFromHTML';
 import parseHTML from '../parseHTML';
 import {convertToRaw} from 'draft-js';
 
 describe('stateFromHTML', () => {
   describe('state from complex HTML structure with single paragraph', () => {
-    let html = fs.readFileSync(__dirname + '/fixtures/large-single-paragraph.html');
+    let file = path.resolve(__dirname, 'fixtures/large-single-paragraph.html');
+    let html = fs.readFileSync(file);
 
     it('should create content state from complex HTML structure', () => {
-      let contentState = stateFromHTML(html);
+      let contentState = stateFromHTML(html.toString());
       let rawContentState = convertToRaw(contentState);
       let blocks = removeKeys(rawContentState.blocks);
       expect(blocks.length).toEqual(1);
@@ -19,10 +21,11 @@ describe('stateFromHTML', () => {
   });
 
   describe('state from complex HTML structure with multiple paragraphs', () => {
-    let html = fs.readFileSync(__dirname + '/fixtures/large-multiple-paragraphs.html');
+    let file = path.resolve(__dirname, 'fixtures/large-multiple-paragraphs.html');
+    let html = fs.readFileSync(file);
 
     it('should create content state from complex HTML structure', () => {
-      let contentState = stateFromHTML(html);
+      let contentState = stateFromHTML(html.toString());
       let rawContentState = convertToRaw(contentState);
       let blocks = removeKeys(rawContentState.blocks);
       expect(blocks.length).toEqual(96);
