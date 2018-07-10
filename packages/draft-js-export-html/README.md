@@ -116,12 +116,12 @@ You can define custom styles and attributes for your block, utilizing the underl
 Example:
 ```js
 let options = {
-  blockStyleFn(block) => {
+  blockStyleFn: (block) => {
     if (block.getData().get('color')) {
       return {
         style: {
-          color: block.getData().get('color')
-        }
+          color: block.getData().get('color'),
+        },
       }
     }
   }
