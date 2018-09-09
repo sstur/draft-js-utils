@@ -190,10 +190,10 @@ class MarkupGenerator {
     this.contentState = contentState;
     this.options = options;
     let [
-      inlineStyles, 
+      inlineStyles,
       styleOrder,
     ] = combineOrderedStyles(options.inlineStyles, [
-      DEFAULT_STYLE_MAP, 
+      DEFAULT_STYLE_MAP,
       DEFAULT_STYLE_ORDER,
     ]);
     this.inlineStyles = inlineStyles;
