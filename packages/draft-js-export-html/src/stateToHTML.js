@@ -25,9 +25,9 @@ type Attributes = {[key: string]: string};
 type StyleDescr = {[key: string]: number | string};
 
 type RenderConfig = {
-  element?: string;
-  attributes?: Attributes;
-  style?: StyleDescr;
+  element?: string,
+  attributes?: Attributes,
+  style?: StyleDescr,
 };
 
 type BlockRenderer = (block: ContentBlock) => ?string;
@@ -40,12 +40,12 @@ type EntityStyleFn = (entity: Entity) => ?RenderConfig;
 type InlineStyleFn = (style: DraftInlineStyle) => ?RenderConfig;
 
 type Options = {
-  inlineStyles?: StyleMap;
-  inlineStyleFn?: InlineStyleFn;
-  blockRenderers?: BlockRendererMap;
-  blockStyleFn?: BlockStyleFn;
-  entityStyleFn?: EntityStyleFn;
-  defaultBlockTag?: ?string;
+  inlineStyles?: StyleMap,
+  inlineStyleFn?: InlineStyleFn,
+  blockRenderers?: BlockRendererMap,
+  blockStyleFn?: BlockStyleFn,
+  entityStyleFn?: EntityStyleFn,
+  defaultBlockTag?: ?string,
 };
 
 const {BOLD, CODE, ITALIC, STRIKETHROUGH, UNDERLINE} = INLINE_STYLE;
@@ -73,6 +73,7 @@ const ENTITY_ATTR_MAP: {[entityType: string]: AttrMap} = {
     href: 'href',
     rel: 'rel',
     target: 'target',
+    targetOption: 'target',
     title: 'title',
     className: 'class',
   },
@@ -188,13 +189,10 @@ class MarkupGenerator {
     }
     this.contentState = contentState;
     this.options = options;
-    let [
-      inlineStyles,
-      styleOrder,
-    ] = combineOrderedStyles(options.inlineStyles, [
-      DEFAULT_STYLE_MAP,
-      DEFAULT_STYLE_ORDER,
-    ]);
+    let [inlineStyles, styleOrder] = combineOrderedStyles(
+      options.inlineStyles,
+      [DEFAULT_STYLE_MAP, DEFAULT_STYLE_ORDER],
+    );
     this.inlineStyles = inlineStyles;
     this.inlineStyleFn = options.inlineStyleFn;
     this.styleOrder = styleOrder;
