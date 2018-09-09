@@ -22,6 +22,10 @@
 {"entityMap":{"0":{"type":"LINK","mutability":"MUTABLE","data":{"href":"/","rel":null,"title":"hi","extra":"foo"}}},"blocks":[{"key":"8r91j","text":"a","type":"unstyled","depth":0,"inlineStyleRanges":[{"offset":0,"length":1,"style":"ITALIC"}],"entityRanges":[{"offset":0,"length":1,"key":0}]}]}
 <p><a href="/" title="hi"><em>a</em></a></p>
 
+# Entity with targetOption
+{"entityMap":{"0":{"type":"LINK","mutability":"MUTABLE","data":{"href":"/","targetOption":"_blank","rel":null,"title":"hi","extra":"foo"}}},"blocks":[{"key":"8r91j","text":"a","type":"unstyled","depth":0,"inlineStyleRanges":[{"offset":0,"length":1,"style":"ITALIC"}],"entityRanges":[{"offset":0,"length":1,"key":0}]}]}
+<p><a href="/" target="_blank" title="hi"><em>a</em></a></p>
+
 # Entity with data-*
 {"entityMap":{"0":{"type":"LINK","mutability":"MUTABLE","data":{"url":"/","rel":null,"title":"hi","extra":"foo","data-id":42,"data-mutability":"mutable","data-False":"bad","data-":"no"}}},"blocks":[{"key":"8r91j","text":"a","type":"unstyled","depth":0,"inlineStyleRanges":[{"offset":0,"length":1,"style":"ITALIC"}],"entityRanges":[{"offset":0,"length":1,"key":0}]}]}
 <p><a href="/" title="hi" data-id="42" data-mutability="mutable"><em>a</em></a></p>

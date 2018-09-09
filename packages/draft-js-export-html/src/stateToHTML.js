@@ -73,6 +73,7 @@ const ENTITY_ATTR_MAP: {[entityType: string]: AttrMap} = {
     href: 'href',
     rel: 'rel',
     target: 'target',
+    targetOption: 'target',
     title: 'title',
     className: 'class',
   },
