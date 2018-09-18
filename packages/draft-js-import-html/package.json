@@ -1,6 +1,6 @@
 {
-  "name": "draft-js-import-html",
-  "version": "1.2.1",
+  "name": "@sendgrid/draft-js-import-html",
+  "version": "1.0.0",
   "description": "DraftJS: Import HTML to ContentState",
   "main": "lib/main.js",
   "typings": "typings/index.d.ts",
@@ -9,7 +9,7 @@
     "watch": "babel src --watch --out-dir lib --ignore \"_*\""
   },
   "dependencies": {
-    "draft-js-import-element": "^1.2.1"
+    "@sendgrid/draft-js-import-element": "^1.0.0"
   },
   "peerDependencies": {
     "draft-js": ">=0.10.0",

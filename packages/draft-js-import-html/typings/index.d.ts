@@ -1,10 +1,10 @@
 /// <reference types="draft-js" />
 
-declare module 'draft-js-import-html' {
+declare module '@sendgrid/draft-js-import-html' {
     import draftjs = require('draft-js');
 
     export type CustomBlockFn = (element: Element) => undefined | null | CustomBlockObject;
-    export type CustomInlineFn = (element: Element, inlineCreators: InlineCreators) => undefined | null | Style | draftjs.EntityInstance;
+    export type CustomInlineFn = (element: Element, inlineCreators: InlineCreators) => undefined | null | Style[] | draftjs.EntityInstance[];
 
     export type CustomBlockObject = {
         type?: string;
