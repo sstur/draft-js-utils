@@ -1,6 +1,6 @@
 /// <reference types="draft-js" />
 
-declare module 'draft-js-export-html' {
+declare module '@sendgrid/draft-js-export-html' {
     import draftjs = require("draft-js");
 
     type BlockStyleFn = (block: draftjs.ContentBlock) => RenderConfig;

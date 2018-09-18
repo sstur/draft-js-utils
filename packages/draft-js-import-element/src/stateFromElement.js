@@ -73,8 +73,8 @@ type CustomEntity = {
 export type CustomInlineFn = (
   element: DOMElement,
   creators: {
-    Style: (style: string) => CustomStyle;
-    Entity: (type: string, data: DataMap<mixed>, mutability?: EntityMutability) => CustomEntity;
+    Style: (style: string) => CustomStyle[];
+    Entity: (type: string, data: DataMap<mixed>, mutability?: EntityMutability) => CustomEntity[];
   }
 ) => ?(CustomStyle | CustomEntity);
 
@@ -338,14 +338,16 @@ class ContentGenerator {
     let entityKey = block.entityStack.slice(-1)[0];
     let {customInlineFn} = this.options;
     let customInline = customInlineFn ? customInlineFn(element, this.inlineCreators) : null;
-    if (customInline != null) {
-      switch (customInline.type) {
+    if (customInline != null && customInline.length) {
+      switch (customInline[0].type) {
         case 'STYLE': {
-          style = style.add(customInline.style);
+          customInline.forEach((inline) => {
+            style = style.add(inline.style);
+          });
           break;
         }
         case 'ENTITY': {
-          entityKey = customInline.entityKey;
+          entityKey = customInline[0].entityKey;
           break;
         }
       }

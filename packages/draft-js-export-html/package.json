@@ -1,6 +1,6 @@
 {
-  "name": "draft-js-export-html",
-  "version": "1.2.0",
+  "name": "@sendgrid/draft-js-export-html",
+  "version": "1.0.4",
   "description": "DraftJS: Export ContentState to HTML",
   "main": "lib/main.js",
   "typings": "typings/index.d.ts",
