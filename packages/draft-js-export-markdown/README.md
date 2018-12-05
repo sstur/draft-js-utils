@@ -10,6 +10,13 @@ It was extracted from [React-RTE](https://react-rte.org) and placed into a separ
 
 This project is still under development. If you want to help out, please open an issue to discuss or join us on [Slack](https://draftjs.slack.com/).
 
+## How to Use
+
+    import { stateToMarkdown } from "draft-js-export-markdown";
+    const markdown = stateToMarkdown(
+      this.state.editorState.getCurrentContent()
+    )
+
 ## License
 
 This software is [ISC Licensed](/LICENSE).
