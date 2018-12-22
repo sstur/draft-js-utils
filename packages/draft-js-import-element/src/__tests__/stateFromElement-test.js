@@ -146,7 +146,7 @@ describe('stateFromElement', () => {
     });
   });
 
-  it.only('should return multiple style from customInlineFn', () => {
+  it('should return multiple style from customInlineFn', () => {
     let element = new ElementNode('div', [], [
       new ElementNode(
         'span',
