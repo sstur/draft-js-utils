@@ -12,6 +12,7 @@ import type {ContentState, ContentBlock} from 'draft-js';
 const {BOLD, CODE, ITALIC, STRIKETHROUGH, UNDERLINE} = INLINE_STYLE;
 
 const CODE_INDENT = '    ';
+const URLRegex = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?(\?([-a-zA-Z0-9@:%_\+.~#?&//=]+)|)/gi;
 
 class MarkupGenerator {
   blocks: Array<ContentBlock>;
@@ -192,6 +193,35 @@ class MarkupGenerator {
               return '';
             }
             let content = encodeContent(text);
+            let match;
+            let output = [];
+            let lastIndex = 0;
+            while (match = URLRegex.exec(content)) { //eslint-disable-line
+              let plainText = '';
+              if (match.index !== lastIndex) {
+                plainText += content.substring(lastIndex, match.index);
+              }
+              if (plainText.length) {
+                output.push(plainText);
+              }
+
+              let url = match[0];
+              if (url.endsWith('.')) {
+                url = url.substring(0, url.length - 1);
+                output.push(`[${url}](${url})`);
+                output.push('.');
+              } else {
+                output.push(`[${url}](${url})`);
+              }
+
+              lastIndex = URLRegex.lastIndex;
+            }
+            if (output.length) {
+              if (lastIndex < content.length) {
+                output.push(content.substring(lastIndex, content.length));
+              }
+              content = output.join('');
+            }
             if (style.has(BOLD)) {
               content = `**${content}**`;
             }
@@ -215,6 +245,11 @@ class MarkupGenerator {
           .join('');
         let entity = entityKey ? contentState.getEntity(entityKey) : null;
         if (entity != null && entity.getType() === ENTITY_TYPE.LINK) {
+          let data = entity.getData();
+          let url = data.url || '';
+          let title = data.title ? ` "${escapeTitle(data.title)}"` : '';
+          return `[${content}](${encodeURL(url)}${title})`;
+        } else if (entity != null && entity.getType() === ENTITY_TYPE.MENTION) {
           let data = entity.getData();
           let url = data.url || '';
           let title = data.title ? ` "${escapeTitle(data.title)}"` : '';

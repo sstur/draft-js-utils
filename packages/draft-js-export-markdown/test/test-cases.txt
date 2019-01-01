@@ -2,6 +2,14 @@
 {"entityMap":{},"blocks":[{"key":"33nh8","text":"a","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[]}]}
 a
 
+>> Autolink
+{"entityMap":{},"blocks":[{"key":"33nh8","text":"https://foo.com","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[]}]}
+[https://foo.com](https://foo.com)
+
+>> Autolink with other text
+{"entityMap":{},"blocks":[{"key":"33nh8","text":"this is a test https://foo.com links","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[]}]}
+this is a test [https://foo.com](https://foo.com) links
+
 >> Single Inline Style
 {"entityMap":{},"blocks":[{"key":"99n0j","text":"asdf","type":"unstyled","depth":0,"inlineStyleRanges":[{"offset":3,"length":1,"style":"BOLD"}],"entityRanges":[]}]}
 asd**f**
