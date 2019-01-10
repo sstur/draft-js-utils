@@ -3,6 +3,7 @@
   "version": "1.2.0",
   "description": "DraftJS: Export ContentState to Markdown",
   "main": "lib/main.js",
+  "typings": "typings/index.d.ts",
   "scripts": {
     "build": "babel src --out-dir lib --ignore \"_*\"",
     "watch": "babel src --watch --out-dir lib --ignore \"_*\""
