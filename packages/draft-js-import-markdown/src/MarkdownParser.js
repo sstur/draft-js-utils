@@ -384,7 +384,7 @@ var inline = {
 };
 
 inline._inside = /(?:\[[^\]]*\]|[^\[\]]|\](?=[^\[]*\]))*/;
-inline._href = /\s*<?([\s\S]*)>?(?:\s+['"]([\s\S]*?)['"])?\s*/;
+inline._href = /\s*(<(?:\\[<>]?|[^\s<>\\])*>|(?:\\[()]?|\([^\s\x00-\x1f\\]*\)|[^\s\x00-\x1f()\\])*?)/;
 
 inline.link = replace(inline.link)('inside', inline._inside)(
   'href',
