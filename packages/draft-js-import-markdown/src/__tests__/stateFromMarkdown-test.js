@@ -94,6 +94,52 @@ describe('stateFromMarkdown', () => {
       }],
     });
   });
+  it('should correctly links', () => {
+    let markdown = `[link1](https://google.com) [link2](https://google.com)`;
+    let contentState = stateFromMarkdown(markdown);
+    let rawContentState = convertToRaw(contentState);
+    let blocks = removeKeys(rawContentState.blocks);
+    expect({
+      ...rawContentState,
+      blocks,
+    }).toEqual({
+      entityMap: {
+        // This is necessary due to flow not supporting non-string literal property keys
+        // eslint-disable-next-line quote-props
+        '0': {
+          type: 'LINK',
+          mutability: 'MUTABLE',
+          data: {
+            url: "https://google.com",
+          },
+        },
+        // eslint-disable-next-line quote-props
+        '1': {
+          type: 'LINK',
+          mutability: 'MUTABLE',
+          data: {
+            url: "https://google.com",
+          },
+        },
+      },
+      blocks: [{
+        text: 'link1 link2',
+        type: 'unstyled',
+        depth: 0,
+        inlineStyleRanges: [],
+        entityRanges: [{
+          offset: 0,
+          length: 5,
+          key: 0,
+        }, {
+          offset: 6,
+          length: 5,
+          key: 1,
+        }],
+        data: {},
+      }],
+    });
+  });
 });
 
 function removeKeys(blocks) {
