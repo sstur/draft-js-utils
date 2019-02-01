@@ -153,7 +153,7 @@ const ElementToEntity = {
     let data = getEntityData(tagName, element);
     // Don't add `<img>` elements with no src.
     if (data.src != null) {
-      return generator.createEntity(ENTITY_TYPE.IMAGE, data);
+      return generator.createEntity(ENTITY_TYPE.IMAGE, data, 'IMMUTABLE');
     }
   },
 };
