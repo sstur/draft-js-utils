@@ -61,6 +61,103 @@ describe('stateFromMarkdown', () => {
       },
     ]);
   });
+  it('should correctly handle images in the middle of text', () => {
+    const src = 'https://google.com/logo.png';
+    let markdown = `Hey look at this: ![](${src}) Pretty cool!`;
+    let contentState = stateFromMarkdown(markdown);
+    let rawContentState = convertToRaw(contentState);
+    let blocks = removeKeys(rawContentState.blocks);
+    expect({
+      ...rawContentState,
+      blocks,
+    }).toEqual({
+      entityMap: {
+        // This is necessary due to flow not supporting non-string literal property keys
+        // eslint-disable-next-line quote-props
+        '0': {
+          type: 'IMAGE',
+          mutability: 'MUTABLE',
+          data: {
+            src: src,
+            alt: alt,
+          },
+        },
+      },
+      blocks: [
+        {
+          text: 'Hey look at this: ',
+          type: 'unstyled',
+          depth: 0,
+          inlineStyleRanges: [],
+          entityRanges: [],
+          data: {},
+        },
+        {
+          text: ' ',
+          type: 'atomic',
+          depth: 0,
+          inlineStyleRanges: [],
+          entityRanges: [
+            {
+              offset: 0,
+              length: 1,
+              key: 0,
+            },
+          ],
+          data: {},
+        },
+        {
+          text: 'Pretty cool!',
+          type: 'unstyled',
+          depth: 0,
+          inlineStyleRanges: [],
+          entityRanges: [],
+          data: {},
+        },
+      ],
+    });
+  });
+  it('should correctly handle images with alt text', () => {
+    const src = 'https://google.com/logo.png';
+    const alt = 'The Google Logo';
+    let markdown = `![${alt}](${src})`;
+    let contentState = stateFromMarkdown(markdown);
+    let rawContentState = convertToRaw(contentState);
+    let blocks = removeKeys(rawContentState.blocks);
+    expect({
+      ...rawContentState,
+      blocks,
+    }).toEqual({
+      entityMap: {
+        // This is necessary due to flow not supporting non-string literal property keys
+        // eslint-disable-next-line quote-props
+        '0': {
+          type: 'IMAGE',
+          mutability: 'MUTABLE',
+          data: {
+            src: src,
+            alt: alt,
+          },
+        },
+      },
+      blocks: [
+        {
+          text: ' ',
+          type: 'atomic',
+          depth: 0,
+          inlineStyleRanges: [],
+          entityRanges: [
+            {
+              offset: 0,
+              length: 1,
+              key: 0,
+            },
+          ],
+          data: {},
+        },
+      ],
+    });
+  });
   it('should correctly handle images with complex srcs', () => {
     const src =
       'https://spectrum.imgix.net/threads/c678032e-68a4-4e14-956d-abfa444a707d/Captura%20de%20pantalla%202017-08-19%20a%20la(s)%2000.14.09.png.0.29802431313299893';
@@ -86,7 +183,7 @@ describe('stateFromMarkdown', () => {
       blocks: [
         {
           text: ' ',
-          type: 'unstyled',
+          type: 'atomic',
           depth: 0,
           inlineStyleRanges: [],
           entityRanges: [
@@ -155,7 +252,7 @@ describe('stateFromMarkdown', () => {
 });
 
 function removeKeys(blocks) {
-  return blocks.map((block) => {
+  return blocks.map(block => {
     // eslint-disable-next-line no-unused-vars
     let {key, ...other} = block;
     return other;
