@@ -196,7 +196,7 @@ describe('stateFromMarkdown', () => {
 });
 
 function removeKeys(blocks) {
-  return blocks.map(block => {
+  return blocks.map((block) => {
     // eslint-disable-next-line no-unused-vars
     let {key, ...other} = block;
     return other;
