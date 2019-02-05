@@ -666,7 +666,11 @@ Renderer.prototype.image = function(href, title, alt) {
   if (alt) {
     attributes.push({name: 'alt', value: alt});
   }
-  return new ElementNode('img', attributes, SELF_CLOSING);
+  return new ElementNode(
+    'figure',
+    [],
+    [new ElementNode('img', attributes, SELF_CLOSING)],
+  );
 };
 
 Renderer.prototype.text = function(childNode) {

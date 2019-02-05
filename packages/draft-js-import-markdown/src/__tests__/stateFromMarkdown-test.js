@@ -61,62 +61,6 @@ describe('stateFromMarkdown', () => {
       },
     ]);
   });
-  it('should correctly handle images in the middle of text', () => {
-    const src = 'https://google.com/logo.png';
-    let markdown = `Hey look at this: ![](${src}) Pretty cool!`;
-    let contentState = stateFromMarkdown(markdown);
-    let rawContentState = convertToRaw(contentState);
-    let blocks = removeKeys(rawContentState.blocks);
-    expect({
-      ...rawContentState,
-      blocks,
-    }).toEqual({
-      entityMap: {
-        // This is necessary due to flow not supporting non-string literal property keys
-        // eslint-disable-next-line quote-props
-        '0': {
-          type: 'IMAGE',
-          mutability: 'MUTABLE',
-          data: {
-            src: src,
-            alt: alt,
-          },
-        },
-      },
-      blocks: [
-        {
-          text: 'Hey look at this: ',
-          type: 'unstyled',
-          depth: 0,
-          inlineStyleRanges: [],
-          entityRanges: [],
-          data: {},
-        },
-        {
-          text: ' ',
-          type: 'atomic',
-          depth: 0,
-          inlineStyleRanges: [],
-          entityRanges: [
-            {
-              offset: 0,
-              length: 1,
-              key: 0,
-            },
-          ],
-          data: {},
-        },
-        {
-          text: 'Pretty cool!',
-          type: 'unstyled',
-          depth: 0,
-          inlineStyleRanges: [],
-          entityRanges: [],
-          data: {},
-        },
-      ],
-    });
-  });
   it('should correctly handle images with alt text', () => {
     const src = 'https://google.com/logo.png';
     const alt = 'The Google Logo';
