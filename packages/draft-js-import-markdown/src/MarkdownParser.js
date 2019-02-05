@@ -37,6 +37,7 @@ var defaults = {
   langPrefix: 'lang-',
   renderer: new Renderer(),
   xhtml: false,
+  atomicImages: false,
 };
 
 /**
@@ -666,11 +667,13 @@ Renderer.prototype.image = function(href, title, alt) {
   if (alt) {
     attributes.push({name: 'alt', value: alt});
   }
-  return new ElementNode(
-    'figure',
-    [],
-    [new ElementNode('img', attributes, SELF_CLOSING)],
-  );
+  let img = new ElementNode('img', attributes, SELF_CLOSING);
+  // Wrap the image in a <figure> if we want "atomic" images.
+  if (this.options.atomicImages) {
+    return new ElementNode('figure', [], [img]);
+  } else {
+    return img;
+  }
 };
 
 Renderer.prototype.text = function(childNode) {

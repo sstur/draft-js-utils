@@ -65,7 +65,9 @@ describe('stateFromMarkdown', () => {
     const src = 'https://google.com/logo.png';
     const alt = 'The Google Logo';
     let markdown = `![${alt}](${src})`;
-    let contentState = stateFromMarkdown(markdown);
+    let contentState = stateFromMarkdown(markdown, {
+      parserOptions: {atomicImages: true},
+    });
     let rawContentState = convertToRaw(contentState);
     let blocks = removeKeys(rawContentState.blocks);
     expect({
@@ -73,9 +75,7 @@ describe('stateFromMarkdown', () => {
       blocks,
     }).toEqual({
       entityMap: {
-        // This is necessary due to flow not supporting non-string literal property keys
-        // eslint-disable-next-line quote-props
-        '0': {
+        [0]: {
           type: 'IMAGE',
           mutability: 'MUTABLE',
           data: {
@@ -114,9 +114,7 @@ describe('stateFromMarkdown', () => {
       blocks,
     }).toEqual({
       entityMap: {
-        // This is necessary due to flow not supporting non-string literal property keys
-        // eslint-disable-next-line quote-props
-        '0': {
+        [0]: {
           type: 'IMAGE',
           mutability: 'MUTABLE',
           data: {
@@ -127,7 +125,7 @@ describe('stateFromMarkdown', () => {
       blocks: [
         {
           text: ' ',
-          type: 'atomic',
+          type: 'unstyled',
           depth: 0,
           inlineStyleRanges: [],
           entityRanges: [
@@ -152,17 +150,14 @@ describe('stateFromMarkdown', () => {
       blocks,
     }).toEqual({
       entityMap: {
-        // This is necessary due to flow not supporting non-string literal property keys
-        // eslint-disable-next-line quote-props
-        '0': {
+        [0]: {
           type: 'LINK',
           mutability: 'MUTABLE',
           data: {
             url: 'https://google.com',
           },
         },
-        // eslint-disable-next-line quote-props
-        '1': {
+        [1]: {
           type: 'LINK',
           mutability: 'MUTABLE',
           data: {
