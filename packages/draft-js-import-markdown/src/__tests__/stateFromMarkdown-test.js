@@ -43,6 +43,30 @@ describe('stateFromMarkdown', () => {
       },
     ]);
   });
+  it('should correctly handle code blocks with languages', () => {
+    let markdown = "```javascript\nconst a = 'b'\n```";
+    let contentState = stateFromMarkdown(markdown);
+    let rawContentState = convertToRaw(contentState);
+    let blocks = removeKeys(rawContentState.blocks);
+    expect(blocks).toEqual([
+      {
+        text: "const a = 'b'",
+        type: 'code-block',
+        data: {
+          language: 'javascript',
+        },
+        depth: 0,
+        inlineStyleRanges: [
+          {
+            length: 13,
+            offset: 0,
+            style: 'CODE',
+          },
+        ],
+        entityRanges: [],
+      },
+    ]);
+  });
   it('should correctly handle linebreaks option', () => {
     let markdown = 'Hello\nWorld';
     let contentState = stateFromMarkdown(markdown, {
