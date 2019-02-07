@@ -294,6 +294,12 @@ class ContentGenerator {
       isCustomType = false;
       type = this.getBlockTypeFromTagName(tagName);
     }
+    if (type === BLOCK_TYPE.CODE) {
+      let language = element.getAttribute('data-language');
+      if (language) {
+        data = {...data, language};
+      }
+    }
     let hasDepth = canHaveDepth(type);
     let allowRender = !SPECIAL_ELEMENTS.hasOwnProperty(tagName);
     if (!isCustomType && !hasSemanticMeaning(type)) {

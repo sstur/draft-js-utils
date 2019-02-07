@@ -594,12 +594,14 @@ function Renderer(options) {
 }
 
 Renderer.prototype.code = function(text, lang) {
-  var attributes = [];
+  var codeAttrs = [];
+  var preAttrs = [];
   if (lang) {
-    attributes.push({name: 'class', value: this.options.langPrefix + lang});
+    codeAttrs.push({name: 'class', value: this.options.langPrefix + lang});
+    preAttrs.push({name: 'data-language', value: lang});
   }
-  var codeNode = new ElementNode('code', attributes, [new TextNode(text)]);
-  return new ElementNode('pre', [], [codeNode]);
+  var codeNode = new ElementNode('code', codeAttrs, [new TextNode(text)]);
+  return new ElementNode('pre', preAttrs, [codeNode]);
 };
 
 Renderer.prototype.blockquote = function(childNode) {
