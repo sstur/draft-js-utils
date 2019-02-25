@@ -241,7 +241,7 @@ class MarkupGenerator {
         let entity = entityKey ? contentState.getEntity(entityKey) : null;
         if (entity != null && entity.getType() === ENTITY_TYPE.LINK) {
           let data = entity.getData();
-          let url = data.url || '';
+          let url = data.href || '';
           let title = data.title ? ` "${escapeTitle(data.title)}"` : '';
           return `[${content}](${encodeURL(url)}${title})`;
         } else if (entity != null && entity.getType() === ENTITY_TYPE.IMAGE) {
