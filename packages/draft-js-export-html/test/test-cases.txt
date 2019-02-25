@@ -26,6 +26,10 @@
 {"entityMap":{"0":{"type":"LINK","mutability":"MUTABLE","data":{"url":"/","rel":null,"title":"hi","extra":"foo","data-id":42,"data-mutability":"mutable","data-False":"bad","data-":"no"}}},"blocks":[{"key":"8r91j","text":"a","type":"unstyled","depth":0,"inlineStyleRanges":[{"offset":0,"length":1,"style":"ITALIC"}],"entityRanges":[{"offset":0,"length":1,"key":0}]}]}
 <p><a href="/" title="hi" data-id="42" data-mutability="mutable"><em>a</em></a></p>
 
+# Link as text if it has unsafe data URI
+{"entityMap":{"0":{"type":"LINK","mutability":"MUTABLE","data":{"href":"data:text/html;base64,PHNjcmlwdD5hbGVydCgieHNzIik8L3NjcmlwdD4="}}},"blocks":[{"key":"33nh8","text":"x","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[{"offset":0,"length":1,"key":0}]}]}
+<p>x</p>
+
 # Entity with inline style
 {"entityMap":{"0":{"type":"LINK","mutability":"MUTABLE","data":{"url":"/"}}},"blocks":[{"key":"8r91j","text":"a","type":"unstyled","depth":0,"inlineStyleRanges":[{"offset":0,"length":1,"style":"ITALIC"}],"entityRanges":[{"offset":0,"length":1,"key":0}]}]}
 <p><a href="/"><em>a</em></a></p>

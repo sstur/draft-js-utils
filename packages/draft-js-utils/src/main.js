@@ -12,3 +12,4 @@ export {default as selectionContainsEntity} from './selectionContainsEntity';
 export {
   default as callModifierForSelectedBlocks,
 } from './callModifierForSelectedBlocks';
+export {default as isAllowedHref} from './isAllowedHref';

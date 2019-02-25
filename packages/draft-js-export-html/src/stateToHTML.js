@@ -5,6 +5,7 @@ import normalizeAttributes from './helpers/normalizeAttributes';
 import styleToCSS from './helpers/styleToCSS';
 
 import {
+  isAllowedHref,
   getEntityRanges,
   BLOCK_TYPE,
   ENTITY_TYPE,
@@ -87,7 +88,7 @@ const ENTITY_ATTR_MAP: {[entityType: string]: AttrMap} = {
 
 // Map entity data to element attributes.
 const DATA_TO_ATTR = {
-  [ENTITY_TYPE.LINK](entityType: string, entity: EntityInstance): Attributes {
+  [ENTITY_TYPE.LINK](entityType: string, entity: EntityInstance): ?Attributes {
     let attrMap = ENTITY_ATTR_MAP.hasOwnProperty(entityType)
       ? ENTITY_ATTR_MAP[entityType]
       : {};
@@ -97,6 +98,9 @@ const DATA_TO_ATTR = {
       let dataValue = data[dataKey];
       if (attrMap.hasOwnProperty(dataKey)) {
         let attrKey = attrMap[dataKey];
+        if (attrKey === 'href' && !isAllowedHref(dataValue)) {
+          return null;
+        }
         attrs[attrKey] = dataValue;
       } else if (DATA_ATTRIBUTE.test(dataKey)) {
         attrs[dataKey] = dataValue;
@@ -104,7 +108,7 @@ const DATA_TO_ATTR = {
     }
     return attrs;
   },
-  [ENTITY_TYPE.IMAGE](entityType: string, entity: EntityInstance): Attributes {
+  [ENTITY_TYPE.IMAGE](entityType: string, entity: EntityInstance): ?Attributes {
     let attrMap = ENTITY_ATTR_MAP.hasOwnProperty(entityType)
       ? ENTITY_ATTR_MAP[entityType]
       : {};
@@ -428,6 +432,9 @@ class MarkupGenerator {
           let attrs = DATA_TO_ATTR.hasOwnProperty(entityType)
             ? DATA_TO_ATTR[entityType](entityType, entity)
             : null;
+          if (attrs == null) {
+            return content;
+          }
           let attrString = stringifyAttrs(attrs);
           return `<a${attrString}>${content}</a>`;
         } else if (entityType != null && entityType === ENTITY_TYPE.IMAGE) {

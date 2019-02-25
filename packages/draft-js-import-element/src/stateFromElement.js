@@ -3,7 +3,7 @@
 import replaceTextWithMeta from './lib/replaceTextWithMeta';
 import {CharacterMetadata, ContentBlock, ContentState, genKey} from 'draft-js';
 import {List, Map, OrderedSet, Repeat, Seq} from 'immutable';
-import {BLOCK_TYPE, ENTITY_TYPE, INLINE_STYLE} from 'draft-js-utils';
+import {isAllowedHref, BLOCK_TYPE, ENTITY_TYPE, INLINE_STYLE} from 'draft-js-utils';
 import {NODE_TYPE_ELEMENT, NODE_TYPE_TEXT} from 'synthetic-dom';
 import {
   INLINE_ELEMENTS,
@@ -86,7 +86,6 @@ type Options = {
 };
 type DataMap<T> = {[key: string]: T};
 
-const DATA_URL = /^data:/i;
 const NO_STYLE = OrderedSet();
 const NO_ENTITY = null;
 
@@ -563,14 +562,6 @@ function toStringMap(input: mixed) {
     }
   }
   return result;
-}
-
-function isAllowedHref(input: ?string) {
-  if (input == null || input.match(DATA_URL)) {
-    return false;
-  } else {
-    return true;
-  }
 }
 
 export function stateFromElement(
