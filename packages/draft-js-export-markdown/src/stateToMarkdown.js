@@ -131,7 +131,11 @@ class MarkupGenerator {
       case BLOCK_TYPE.CODE: {
         this.insertLineBreaks(1);
         if (this.options.gfm) {
-          this.output.push('```\n');
+          const language =
+            block.getData() && block.getData().get('language')
+              ? block.getData().get('language')
+              : '';
+          this.output.push(`\`\`\`${language}\n`);
           this.output.push(this.renderBlockContent(block) + '\n');
           this.output.push('```\n');
         } else {
