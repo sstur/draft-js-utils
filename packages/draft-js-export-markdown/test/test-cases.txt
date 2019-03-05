@@ -72,3 +72,9 @@ Great!
 ```
 callback(num_items * 1 + 2, ~foo, `string`);
 ```
+
+>> code block with language | {"gfm": true}
+{"entityMap":{},"blocks":[{"text":"const js = true","type":"code-block","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{"language":"javascript"}}]}
+```javascript
+const js = true
+```
