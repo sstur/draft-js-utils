@@ -30,7 +30,7 @@ type RenderConfig = {
   style?: StyleDescr;
 };
 
-type BlockRenderer = (block: ContentBlock) => ?string;
+type BlockRenderer = (block: ContentBlock, generator: MarkupGenerator) => ?string;
 type BlockRendererMap = {[blockType: string]: BlockRenderer};
 
 type StyleMap = {[styleName: string]: RenderConfig};
@@ -215,6 +215,7 @@ class MarkupGenerator {
   }
 
   processBlock() {
+    const generator = this;
     let {blockRenderers, defaultBlockTag} = this.options;
     let block = this.blocks[this.currentBlock];
     let blockType = block.getType();
@@ -233,7 +234,7 @@ class MarkupGenerator {
       blockRenderers != null && blockRenderers.hasOwnProperty(blockType)
         ? blockRenderers[blockType]
         : null;
-    let customRendererOutput = customRenderer ? customRenderer(block) : null;
+    let customRendererOutput = customRenderer ? customRenderer(block, generator) : null;
     // Renderer can return null, which will cause processing to continue as normal.
     if (customRendererOutput != null) {
       this.output.push(customRendererOutput);
