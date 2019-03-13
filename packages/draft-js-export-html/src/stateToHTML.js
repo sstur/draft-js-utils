@@ -30,7 +30,7 @@ type RenderConfig = {
   style?: StyleDescr;
 };
 
-type BlockRenderer = (block: ContentBlock, generator: MarkupGenerator) => ?string;
+type BlockRenderer = (block: ContentBlock, generator?: MarkupGenerator) => ?string;
 type BlockRendererMap = {[blockType: string]: BlockRenderer};
 
 type StyleMap = {[styleName: string]: RenderConfig};
