@@ -215,7 +215,6 @@ class MarkupGenerator {
   }
 
   processBlock() {
-    const generator = this;
     let {blockRenderers, defaultBlockTag} = this.options;
     let block = this.blocks[this.currentBlock];
     let blockType = block.getType();
@@ -234,7 +233,7 @@ class MarkupGenerator {
       blockRenderers != null && blockRenderers.hasOwnProperty(blockType)
         ? blockRenderers[blockType]
         : null;
-    let customRendererOutput = customRenderer ? customRenderer(block, generator) : null;
+    let customRendererOutput = customRenderer ? customRenderer(block, this) : null;
     // Renderer can return null, which will cause processing to continue as normal.
     if (customRendererOutput != null) {
       this.output.push(customRendererOutput);
