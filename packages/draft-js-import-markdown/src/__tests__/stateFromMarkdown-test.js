@@ -1,8 +1,8 @@
 // @flow
-const {describe, it} = global;
+const { describe, it } = global;
 import expect from 'expect';
 import stateFromMarkdown from '../stateFromMarkdown';
-import {convertToRaw} from 'draft-js';
+import { convertToRaw } from 'draft-js';
 
 describe('stateFromMarkdown', () => {
   it('should create content state', () => {
@@ -70,7 +70,7 @@ describe('stateFromMarkdown', () => {
   it('should correctly handle linebreaks option', () => {
     let markdown = 'Hello\nWorld';
     let contentState = stateFromMarkdown(markdown, {
-      parserOptions: {breaks: true},
+      parserOptions: { breaks: true },
     });
     let rawContentState = convertToRaw(contentState);
     let blocks = removeKeys(rawContentState.blocks);
@@ -90,7 +90,7 @@ describe('stateFromMarkdown', () => {
     const alt = 'The Google Logo';
     let markdown = `![${alt}](${src})`;
     let contentState = stateFromMarkdown(markdown, {
-      parserOptions: {atomicImages: true},
+      parserOptions: { atomicImages: true },
     });
     let rawContentState = convertToRaw(contentState);
     let blocks = removeKeys(rawContentState.blocks);
@@ -212,12 +212,60 @@ describe('stateFromMarkdown', () => {
       ],
     });
   });
+  it('should correctly handle duplicate links', () => {
+    let markdown = `[link](https://google.com) [link](https://google.com)`;
+    let contentState = stateFromMarkdown(markdown);
+    let rawContentState = convertToRaw(contentState);
+    let blocks = removeKeys(rawContentState.blocks);
+    expect({
+      ...rawContentState,
+      blocks,
+    }).toEqual({
+      entityMap: {
+        [0]: {
+          type: 'LINK',
+          mutability: 'MUTABLE',
+          data: {
+            url: 'https://google.com',
+          },
+        },
+        [1]: {
+          type: 'LINK',
+          mutability: 'MUTABLE',
+          data: {
+            url: 'https://google.com',
+          },
+        },
+      },
+      blocks: [
+        {
+          text: 'link link',
+          type: 'unstyled',
+          depth: 0,
+          inlineStyleRanges: [],
+          entityRanges: [
+            {
+              offset: 0,
+              length: 4,
+              key: 0,
+            },
+            {
+              offset: 5,
+              length: 4,
+              key: 1,
+            },
+          ],
+          data: {},
+        },
+      ],
+    });
+  });
 });
 
 function removeKeys(blocks) {
   return blocks.map((block) => {
     // eslint-disable-next-line no-unused-vars
-    let {key, ...other} = block;
+    let { key, ...other } = block;
     return other;
   });
 }
