@@ -38,6 +38,10 @@ Hello [World](/a).
 {"entityMap":{"0":{"type":"LINK","mutability":"MUTABLE","data":{"url":"/a","title":"f\"oo"}}},"blocks":[{"key":"2m141","text":"Hello World.","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[{"offset":6,"length":5,"key":0}]}]}
 Hello [World](/a "f\"oo").
 
+>> Link with brackets
+{"entityMap":{"0":{"type":"LINK","mutability":"MUTABLE","data":{"url":"http://msdn.microsoft.com/en-us/library/aa752574(VS.85).aspx","foo":"x"}}},"blocks":[{"key":"f131g","text":"Hello World.","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[{"offset":6,"length":5,"key":0}]}]}
+Hello [World](http://msdn.microsoft.com/en-us/library/aa752574%28VS.85%29.aspx).
+
 >> Ordered List
 {"entityMap":{},"blocks":[{"key":"33nh8","text":"An ordered list:","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[]},{"key":"8kinl","text":"One","type":"ordered-list-item","depth":0,"inlineStyleRanges":[],"entityRanges":[]},{"key":"ekll4","text":"Two","type":"ordered-list-item","depth":0,"inlineStyleRanges":[],"entityRanges":[]}]}
 An ordered list:

@@ -212,6 +212,43 @@ describe('stateFromMarkdown', () => {
       ],
     });
   });
+  it('should correctly parse link containing escaped parenthesis', () => {
+    let markdown = `[link1](http://msdn.microsoft.com/en-us/library/aa752574%28VS.85%29.aspx)`;
+    let contentState = stateFromMarkdown(markdown);
+    let rawContentState = convertToRaw(contentState);
+    let blocks = removeKeys(rawContentState.blocks);
+    expect({
+      ...rawContentState,
+      blocks,
+    }).toEqual({
+      entityMap: {
+        [0]: {
+          type: 'LINK',
+          mutability: 'MUTABLE',
+          data: {
+            url:
+              'http://msdn.microsoft.com/en-us/library/aa752574%28VS.85%29.aspx',
+          },
+        },
+      },
+      blocks: [
+        {
+          text: 'link1',
+          type: 'unstyled',
+          depth: 0,
+          inlineStyleRanges: [],
+          entityRanges: [
+            {
+              offset: 0,
+              length: 5,
+              key: 0,
+            },
+          ],
+          data: {},
+        },
+      ],
+    });
+  });
 });
 
 function removeKeys(blocks) {

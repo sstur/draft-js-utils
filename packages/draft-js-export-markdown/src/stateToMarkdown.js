@@ -283,8 +283,9 @@ function encodeCode(text) {
 
 // Encode chars that would normally be allowed in a URL but would conflict with
 // our markdown syntax: `[foo](http://foo/)`
+const LINK_CHARACTER_REPLACEMENTS = {'(': '%28', ')': '%29'};
 function encodeURL(url) {
-  return url.replace(/\)/g, '%29');
+  return url.replace(/[()]/g, (char) => LINK_CHARACTER_REPLACEMENTS[char]);
 }
 
 // Escape quotes using backslash.
