@@ -6,8 +6,8 @@
   "typings": "typings/index.d.ts",
   "scripts": {
     "release": "npm run build && npm publish",
-    "build": "babel src --out-dir lib --ignore \"_*\"",
-    "watch": "babel src --watch --out-dir lib --ignore \"_*\""
+    "build": "babel src --root-mode upward --out-dir lib --ignore \"_*\"",
+    "watch": "babel src --root-mode upward --watch --out-dir lib --ignore \"_*\""
   },
   "dependencies": {
     "draft-js-import-element": "^1.3.3"

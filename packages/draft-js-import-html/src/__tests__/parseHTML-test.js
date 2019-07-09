@@ -4,7 +4,7 @@ import expect from 'expect';
 import parseHTML from '../parseHTML';
 
 describe('parseHTML', () => {
-  it('should parse basic elements', () => {
+  describe('should parse basic elements', () => {
     let html = '<p>Hello World</p>';
     let element = parseHTML(html);
     it('should return a element of some kind', () => {
@@ -22,7 +22,7 @@ describe('parseHTML', () => {
     });
   });
 
-  it('should parse incomplete html', () => {
+  describe('should parse incomplete html', () => {
     let html = '<p><strong>Hello<div>World';
     let element = parseHTML(html);
     it('should return a element of some kind', () => {
