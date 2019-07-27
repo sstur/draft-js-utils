@@ -6,6 +6,7 @@ import {
   ENTITY_TYPE,
   INLINE_STYLE,
 } from 'draft-js-utils';
+import markdownEscapes from 'markdown-escapes';
 
 import type {ContentState, ContentBlock} from 'draft-js';
 
@@ -194,6 +195,13 @@ class MarkupGenerator {
     }
   }
 
+  encodeContent(text) {
+    const markdownCharacters = markdownEscapes({gfm: this.options.gfm});
+
+    const regex = new RegExp(`[${'\\' + markdownCharacters.join('\\')}]`, 'g');
+    return text.replace(regex, '\\$&');
+  }
+
   renderBlockContent(block: ContentBlock): string {
     let {contentState} = this;
     let blockType = block.getType();
@@ -224,19 +232,19 @@ class MarkupGenerator {
             if (style.has(CODE)) {
               return '`' + encodeCode(content) + '`';
             }
-            content = encodeContent(text);
+
+            content = this.encodeContent(text);
+
             if (style.has(BOLD)) {
               content = `**${content}**`;
             }
             if (style.has(UNDERLINE)) {
-              // TODO: encode `+`?
               content = `++${content}++`;
             }
             if (style.has(ITALIC)) {
               content = `_${content}_`;
             }
             if (style.has(STRIKETHROUGH)) {
-              // TODO: encode `~`?
               content = `~~${content}~~`;
             }
             return content;
@@ -271,10 +279,6 @@ function canHaveDepth(blockType: any): boolean {
     default:
       return false;
   }
-}
-
-function encodeContent(text) {
-  return text.replace(/[*_`]/g, '\\$&');
 }
 
 function encodeCode(text) {
