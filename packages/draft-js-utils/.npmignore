@@ -1,9 +1,0 @@
-.babelrc
-.eslintignore
-.eslintrc
-.flowconfig
-.travis.yml
-_*
-flow-typed
-src
-test

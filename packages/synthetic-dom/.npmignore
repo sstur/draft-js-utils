@@ -1,7 +1,0 @@
-.babelrc
-.eslintignore
-.eslintrc
-.flowconfig
-_*
-src
-test

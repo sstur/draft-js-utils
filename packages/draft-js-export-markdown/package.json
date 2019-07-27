@@ -3,10 +3,16 @@
   "version": "1.3.3",
   "description": "DraftJS: Export ContentState to Markdown",
   "main": "lib/main.js",
+  "module": "esm/main.js",
+  "files": [
+    "lib",
+    "esm"
+  ],
   "scripts": {
     "release": "npm run build && npm publish",
-    "build": "babel src --root-mode upward --out-dir lib --ignore \"_*\"",
-    "watch": "babel src --root-mode upward --watch --out-dir lib --ignore \"_*\""
+    "build:cjs": "babel src --root-mode upward --out-dir lib --ignore \"_*\"",
+    "build:esm": "NODE_ENV=esm babel src --root-mode upward --out-dir esm --ignore \"_*\"",
+    "build": "yarn build:cjs && yarn build:esm"
   },
   "dependencies": {
     "draft-js-utils": "^1.3.3"
