@@ -13,7 +13,7 @@ declare module 'draft-js-export-html' {
     };
 
     export interface Options {
-        defaultBlockTag?: string;
+        defaultBlockTag?: string|null;
         inlineStyles?: { [styleName: string]: RenderConfig };
         blockRenderers?: { [blockType: string]: BlockRenderer };
         blockStyleFn?: BlockStyleFn;
