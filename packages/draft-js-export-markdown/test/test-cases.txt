@@ -6,6 +6,18 @@ a
 {"entityMap":{},"blocks":[{"key":"99n0j","text":"asdf","type":"unstyled","depth":0,"inlineStyleRanges":[{"offset":3,"length":1,"style":"BOLD"}],"entityRanges":[]}]}
 asd**f**
 
+>> Single Inline Style With Space After
+{"entityMap":{},"blocks":[{"key":"99n0j","text":"asdf .","type":"unstyled","depth":0,"inlineStyleRanges":[{"offset":3,"length":2,"style":"BOLD"}],"entityRanges":[]}]}
+asd**f** .
+
+>> Single Inline Style With Space Before
+{"entityMap":{},"blocks":[{"key":"99n0j","text":"asd f.","type":"unstyled","depth":0,"inlineStyleRanges":[{"offset":3,"length":2,"style":"BOLD"}],"entityRanges":[]}]}
+asd **f**.
+
+>> Single Inline Style With Space Either Side
+{"entityMap":{},"blocks":[{"key":"99n0j","text":"asd f .","type":"unstyled","depth":0,"inlineStyleRanges":[{"offset":3,"length":3,"style":"BOLD"}],"entityRanges":[]}]}
+asd **f** .
+
 >> Nested Inline Style
 {"entityMap":{},"blocks":[{"key":"9nc73","text":"BoldItalic","type":"unstyled","depth":0,"inlineStyleRanges":[{"offset":0,"length":10,"style":"BOLD"},{"offset":0,"length":10,"style":"ITALIC"}],"entityRanges":[]}]}
 _**BoldItalic**_
