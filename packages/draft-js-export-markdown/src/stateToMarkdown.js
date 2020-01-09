@@ -220,9 +220,9 @@ class MarkupGenerator {
             }
 
             const contentLength = content.length;
-            content = content.trimStart();
+            content = content.trimLeft();
             const leftPad = contentLength - content.length;
-            content = content.trimEnd();
+            content = content.trimRight();
             const rightPad = contentLength - content.length - leftPad;
 
             // NOTE: We attempt some basic character escaping here, although
