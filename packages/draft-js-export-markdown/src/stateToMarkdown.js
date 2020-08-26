@@ -235,7 +235,7 @@ if (!content.length) {
             if (style.has(CODE)) {
               return '`' + encodeCode(content) + '`';
             }
-            content = encodeContent(text.trim());
+            content = encodeContent(content);
             if (style.has(BOLD)) {
               content = `**${content}**`;
             }
