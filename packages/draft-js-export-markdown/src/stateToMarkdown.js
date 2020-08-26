@@ -224,6 +224,10 @@ class MarkupGenerator {
             const leftPad = contentLength - content.length;
             content = content.trimRight();
             const rightPad = contentLength - content.length - leftPad;
+if (!content.length) {
+  // Return the original text if there is nothing left after trimming.
+  return text;
+}
 
             // NOTE: We attempt some basic character escaping here, although
             // I don't know if escape sequences are really valid in markdown,
