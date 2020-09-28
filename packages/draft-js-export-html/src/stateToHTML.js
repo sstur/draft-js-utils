@@ -247,8 +247,7 @@ class MarkupGenerator {
     let customRenderBlockContentOutput = renderBlockContentFn ? renderBlockContentFn(block) : null;
     if (customRenderBlockContentOutput != null) {
       this.output.push(customRenderBlockContentOutput);
-    }
-    else {
+    } else {
       this.output.push(this.renderBlockContent(block));
     }
     // Look ahead and see if we will nest list.
