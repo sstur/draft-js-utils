@@ -269,7 +269,6 @@ describe('stateFromMarkdown', () => {
     let contentState = stateFromMarkdown(markdownValues.italicEscapeUnderscoreChar);
     let rawContentState = convertToRaw(contentState);
     let blocks = removeKeys(rawContentState.blocks);
-    //console.log(expectedRawData.italicEscapeUnderscoreChar);
     expect([expectedRawData.italicEscapeUnderscoreChar]).toEqual(blocks);
   });
   it('should correctly parse italic and Bold words with the "*" character in markdown', () => {
