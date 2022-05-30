@@ -4,6 +4,10 @@ import expect from 'expect';
 import stateFromMarkdown from '../stateFromMarkdown';
 import {convertToRaw} from 'draft-js';
 
+
+import expectedRawData from './data/rawData.js';
+import markdownValues from './data/markdownValues.js';
+
 describe('stateFromMarkdown', () => {
   it('should create content state', () => {
     let markdown = 'Hello World';
@@ -248,6 +252,30 @@ describe('stateFromMarkdown', () => {
         },
       ],
     });
+  });
+  it('should correctly parse italic words with markdown', () => {
+    let contentState = stateFromMarkdown(markdownValues.italicTest);
+    let rawContentState = convertToRaw(contentState);
+    let blocks = removeKeys(rawContentState.blocks);
+    expect([expectedRawData.italicTest]).toEqual(blocks);
+  });
+  it('should correctly parse italic and bold words with markdown', () => {
+    let contentState = stateFromMarkdown(markdownValues.italicAndBoldTest);
+    let rawContentState = convertToRaw(contentState);
+    let blocks = removeKeys(rawContentState.blocks);
+    expect([expectedRawData.italicAndBoldTest]).toEqual(blocks);
+  });
+  it('should correctly parse italic words with the "_" character in markdown', () => {
+    let contentState = stateFromMarkdown(markdownValues.italicEscapeUnderscoreChar);
+    let rawContentState = convertToRaw(contentState);
+    let blocks = removeKeys(rawContentState.blocks);
+    expect([expectedRawData.italicEscapeUnderscoreChar]).toEqual(blocks);
+  });
+  it('should correctly parse italic and Bold words with the "*" character in markdown', () => {
+    let contentState = stateFromMarkdown(markdownValues.italicEscapeBoldChar);
+    let rawContentState = convertToRaw(contentState);
+    let blocks = removeKeys(rawContentState.blocks);
+    expect([expectedRawData.italicEscapeBoldChar]).toEqual(blocks);
   });
 });
 
