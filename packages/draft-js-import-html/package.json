@@ -11,10 +11,10 @@
     "typings"
   ],
   "scripts": {
-    "release": "npm run build && npm publish",
     "build:cjs": "babel src --root-mode upward --out-dir lib --ignore \"_*\"",
     "build:esm": "NODE_ENV=esm babel src --root-mode upward --out-dir esm --ignore \"_*\"",
-    "build": "yarn build:cjs && yarn build:esm"
+    "build": "yarn build:cjs && yarn build:esm",
+    "prepublishOnly": "yarn build"
   },
   "dependencies": {
     "draft-js-import-element": "^1.4.0"
