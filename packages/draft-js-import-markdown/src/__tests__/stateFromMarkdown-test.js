@@ -5,8 +5,8 @@ import stateFromMarkdown from '../stateFromMarkdown';
 import {convertToRaw} from 'draft-js';
 
 
-import expectedRawData from './data/rawData.js';
-import markdownValues from './data/markdownValues.js';
+import expectedRawData from '../test-fixtures/rawData.js';
+import markdownValues from '../test-fixtures/markdownValues.js';
 
 describe('stateFromMarkdown', () => {
   it('should create content state', () => {
