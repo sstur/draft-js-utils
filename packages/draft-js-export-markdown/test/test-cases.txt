@@ -20,11 +20,11 @@ asd **f** .
 
 >> Nested Inline Style
 {"entityMap":{},"blocks":[{"key":"9nc73","text":"BoldItalic","type":"unstyled","depth":0,"inlineStyleRanges":[{"offset":0,"length":10,"style":"BOLD"},{"offset":0,"length":10,"style":"ITALIC"}],"entityRanges":[]}]}
-_**BoldItalic**_
+***BoldItalic***
 
 >> Adjacent Inline Style
 {"entityMap":{},"blocks":[{"key":"9nc73","text":"BoldItalic","type":"unstyled","depth":0,"inlineStyleRanges":[{"offset":4,"length":6,"style":"BOLD"},{"offset":0,"length":4,"style":"ITALIC"}],"entityRanges":[]}]}
-_Bold_**Italic**
+*Bold***Italic**
 
 >> Image with alt
 {"entityMap":{"0":{"type":"IMAGE","mutability":"MUTABLE","data":{"src":"/a.jpg","alt":"x"}}},"blocks":[{"key":"f131g","text":"Hello World.","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[{"offset":5,"length":1,"key":0}]}]}

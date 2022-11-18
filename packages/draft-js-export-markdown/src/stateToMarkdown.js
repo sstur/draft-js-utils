@@ -244,7 +244,7 @@ if (!content.length) {
               content = `++${content}++`;
             }
             if (style.has(ITALIC)) {
-              content = `_${content}_`;
+              content = `*${content}*`;
             }
             if (style.has(STRIKETHROUGH)) {
               // TODO: encode `~`?
