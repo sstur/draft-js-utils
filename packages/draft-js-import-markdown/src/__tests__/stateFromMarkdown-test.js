@@ -253,6 +253,24 @@ describe('stateFromMarkdown', () => {
       ],
     });
   });
+  it('should correctly handle emphasis', () => {
+    let markdown = '<h1>Hello <em>world</em>.</h1>';
+    let contentState = stateFromMarkdown(markdown, {
+      parserOptions: {breaks: true},
+    });
+    let rawContentState = convertToRaw(contentState);
+    let blocks = removeKeys(rawContentState.blocks);
+    expect(blocks).toEqual([
+      {
+        text: '<h1>Hello <em>world</em>.</h1>',
+        type: 'unstyled',
+        depth: 0,
+        inlineStyleRanges: [],
+        entityRanges: [],
+        data: {},
+      },
+    ]);
+  });
   it('should correctly parse italic words with markdown', () => {
     let contentState = stateFromMarkdown(markdownValues.italicTest);
     let rawContentState = convertToRaw(contentState);
