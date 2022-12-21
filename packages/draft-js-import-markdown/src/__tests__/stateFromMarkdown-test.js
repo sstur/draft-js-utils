@@ -271,6 +271,96 @@ describe('stateFromMarkdown', () => {
       },
     ]);
   });
+  it('should correctly handle nested strong and emphasis', () => {
+    let markdown = '<p><em><strong>BoldItalic</strong></em></p>';
+    let contentState = stateFromMarkdown(markdown, {
+      parserOptions: {breaks: true},
+    });
+    let rawContentState = convertToRaw(contentState);
+    let blocks = removeKeys(rawContentState.blocks);
+    expect(blocks).toEqual([
+      {
+        text: '<p><em><strong>BoldItalic</strong></em></p>',
+        type: 'unstyled',
+        depth: 0,
+        inlineStyleRanges: [],
+        entityRanges: [],
+        data: {},
+      },
+    ]);
+  });
+  it('should correctly handle adjacent strong and emphasis', () => {
+    let markdown = '<p><em>Bold</em><strong>Italic</strong></p>';
+    let contentState = stateFromMarkdown(markdown, {
+      parserOptions: {breaks: true},
+    });
+    let rawContentState = convertToRaw(contentState);
+    let blocks = removeKeys(rawContentState.blocks);
+    expect(blocks).toEqual([
+      {
+        text: '<p><em>Bold</em><strong>Italic</strong></p>',
+        type: 'unstyled',
+        depth: 0,
+        inlineStyleRanges: [],
+        entityRanges: [],
+        data: {},
+      },
+    ]);
+  });
+  it('should correctly handle entity with href', () => {
+    let markdown = '<p><a href="/"><em>a</em></a></p>';
+    let contentState = stateFromMarkdown(markdown, {
+      parserOptions: {breaks: true},
+    });
+    let rawContentState = convertToRaw(contentState);
+    let blocks = removeKeys(rawContentState.blocks);
+    expect(blocks).toEqual([
+      {
+        text: '<p><a href="/"><em>a</em></a></p>',
+        type: 'unstyled',
+        depth: 0,
+        inlineStyleRanges: [],
+        entityRanges: [],
+        data: {},
+      },
+    ]);
+  });
+  it('should correctly handle entity with href and title', () => {
+    let markdown = '<p><a href="/" title="hi"><em>a</em></a></p>';
+    let contentState = stateFromMarkdown(markdown, {
+      parserOptions: {breaks: true},
+    });
+    let rawContentState = convertToRaw(contentState);
+    let blocks = removeKeys(rawContentState.blocks);
+    expect(blocks).toEqual([
+      {
+        text: '<p><a href="/" title="hi"><em>a</em></a></p>',
+        type: 'unstyled',
+        depth: 0,
+        inlineStyleRanges: [],
+        entityRanges: [],
+        data: {},
+      },
+    ]);
+  });
+  it('should correctly handle entity with href, title, and data-*', () => {
+    let markdown = '<p><a href="/" title="hi" data-id="42" data-mutability="mutable"><em>a</em></a></p>';
+    let contentState = stateFromMarkdown(markdown, {
+      parserOptions: {breaks: true},
+    });
+    let rawContentState = convertToRaw(contentState);
+    let blocks = removeKeys(rawContentState.blocks);
+    expect(blocks).toEqual([
+      {
+        text: '<p><a href="/" title="hi" data-id="42" data-mutability="mutable"><em>a</em></a></p>',
+        type: 'unstyled',
+        depth: 0,
+        inlineStyleRanges: [],
+        entityRanges: [],
+        data: {},
+      },
+    ]);
+  });
   it('should correctly parse italic words with markdown', () => {
     let contentState = stateFromMarkdown(markdownValues.italicTest);
     let rawContentState = convertToRaw(contentState);
