@@ -3,6 +3,7 @@
 declare module 'draft-js-import-html' {
     import draftjs = require('draft-js');
 
+    type EntityMutability = 'IMMUTABLE' | 'MUTABLE' | 'SEGMENTED';
     export type CustomBlockFn = (element: Element) => undefined | null | CustomBlockObject;
     export type CustomInlineFn = (element: Element, inlineCreators: InlineCreators) => undefined | null | Style | draftjs.EntityInstance;
 
@@ -13,7 +14,7 @@ declare module 'draft-js-import-html' {
 
     export type InlineCreators = {
         Style: (style: string) => Style;
-        Entity: (type: string, data?: Object) => draftjs.EntityInstance;
+        Entity: (type: string, data?: Object, mutability?: EntityMutability) => draftjs.EntityInstance;
     };
 
     export type Style = {
